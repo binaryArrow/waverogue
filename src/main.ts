@@ -1,3 +1,5 @@
+import {Player} from "./models/Player";
+
 let secondsPassed
 let oldTimeStamp: number
 let fps
@@ -5,8 +7,7 @@ let canvas: HTMLCanvasElement
 let context: CanvasRenderingContext2D
 let x = 0
 let y = 0
-
-
+let player: Player
 window.onload = init
 
 
@@ -14,6 +15,7 @@ window.onload = init
 function init() {
     canvas = document.getElementById('gridCanvas') as HTMLCanvasElement
     context = canvas.getContext('2d') as CanvasRenderingContext2D
+    player = new Player(context, x, y)
     window.requestAnimationFrame(update)
     draw()
 }
@@ -26,13 +28,9 @@ function update(timeStamp: number){
 }
 
 function draw() {
-    let randomColor = Math.random() > 0.5? '#ff8080' : '#0099b0';
-    context.beginPath()
-    context.arc(x, y, 10, 0, 2 * Math.PI)
-    context.strokeStyle = '#000000'
-    context.stroke()
-    context.fillStyle = randomColor
-    context.fill()
+    player.draw()
+    player.posX = x
+    player.posY = y
     x ++
     y ++
 }
