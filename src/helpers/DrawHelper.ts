@@ -1,8 +1,8 @@
-import {Sprite} from "../models/Sprite";
+import {GameObject} from "../models/GameObject";
 
 export class DrawHelper {
 
-    static draw(objects: Sprite[]): void {
+    static draw(objects: GameObject[]): void {
         objects.forEach(object => object.draw())
     }
 
