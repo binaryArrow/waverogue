@@ -7,12 +7,12 @@ export class InitHelper {
             enemies.push(
                 new Enemy(
                     context,
-                    Math.floor(Math.random() * 1000),
-                    750,
-                    2,
-                    20,
-                    10,
-                    10
+                    Math.floor(Math.random() * 1770),
+                    300,
+                    100,
+                    500,
+                    30,
+                    30
                 )
             )
         }

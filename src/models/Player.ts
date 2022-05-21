@@ -15,7 +15,7 @@ export class Player extends GameObject implements Character{
     }
 
     jump(secondsPast: number): void {
-        this.posY += 5 * secondsPast
+        this.posY -= 100 * secondsPast
     }
 
     moveLeft(secondsPast: number): void {
@@ -27,6 +27,18 @@ export class Player extends GameObject implements Character{
     }
 
     roll(secondsPast: number): void {
+    }
+
+    fall(secondsPast: number) {
+        this.velocityY += this.gravity
+        this.posY += this.velocityY * secondsPast * this.gravity
+    }
+
+    update(secondsPassed: number) {
+        if(this.posY + this.height < 600)
+            this.fall(secondsPassed)
+        if(this.posY + this.height > 600)
+            this.posY = 600 - this.height
     }
 
 }
