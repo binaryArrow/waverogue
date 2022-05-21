@@ -1,10 +1,10 @@
 export class GameObject {
-    private context: CanvasRenderingContext2D
+    context: CanvasRenderingContext2D
     gravity: number = 0.6
     posX: number
     posY: number
-    velocityX: number
-    velocityY: number
+    movementSpeed: number
+    fallSpeed: number
     width: number
     height: number
     collides: boolean = false
@@ -13,16 +13,16 @@ export class GameObject {
         context: CanvasRenderingContext2D,
         x: number,
         y: number,
-        velocityX: number,
-        velocityY: number,
+        movementSpeed: number,
+        fallSpeed: number,
         width: number,
         height: number
         ) {
         this.context = context
         this.posX = x
         this.posY = y
-        this.velocityX = velocityX
-        this.velocityY = velocityY
+        this.movementSpeed = movementSpeed
+        this.fallSpeed = fallSpeed
         this.width = width
         this.height = height
     }
