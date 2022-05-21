@@ -5,7 +5,6 @@ import {DrawHelper} from "./helpers/DrawHelper";
 
 let secondsPassed: number = 0
 let oldTimeStamp: number = 0
-let timePassed: number = 0
 let fps
 let canvas: HTMLCanvasElement
 let context: CanvasRenderingContext2D
@@ -14,11 +13,10 @@ let enemies: Enemy[]
 window.onload = init
 
 
-
 function init() {
     canvas = document.getElementById('gridCanvas') as HTMLCanvasElement
     context = canvas.getContext('2d') as CanvasRenderingContext2D
-    player = new Player(context, 0, 700, 300, 50, 50, 50 )
+    player = new Player(context, 600, 300, 300, 500, 50, 50 )
     enemies = InitHelper.spawnEnemies(5, context)
     window.requestAnimationFrame(loop)
 }
@@ -29,15 +27,12 @@ function loop(timeStamp: number){
     secondsPassed = Math.min(secondsPassed, 0.1)
     context.clearRect(0, 0, canvas.width, canvas.height)
     DrawHelper.draw([player, ...enemies])
-    update()
+    DrawHelper.drawLevel(context)
+    player.update(secondsPassed)
+    enemies.forEach(it=>it.update(secondsPassed))
     drawFps()
     window.requestAnimationFrame(loop)
 }
-
-function update(){
-    player.moveRight(secondsPassed)
-}
-
 function drawFps(){
     fps = Math.round(1 / secondsPassed)
     context.font = '15px Arial';
