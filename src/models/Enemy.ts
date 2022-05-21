@@ -1,51 +1,39 @@
 import {GameObject} from "./GameObject";
 import {Character} from "./Character";
 
-export class Enemy extends GameObject implements Character{
+export class Enemy extends GameObject implements Character {
 
-    currentHeight: number = 0
-    random = Math.random()
-
-    constructor(
-        context: CanvasRenderingContext2D,
-        posX: number,
-        posY: number,
-        velocityX: number,
-        velocityY: number,
-        width: number,
-        height: number
-    ) {
-        super(context, posX, posY, velocityX, velocityY, width, height);
+    move(secondsPast: number): void {
+        throw new Error("Method not implemented.");
     }
 
     jump(secondsPast: number): void {
         this.posY -= 5 * secondsPast
-        this.currentHeight += 2 * secondsPast
-    }
-
-    moveLeft(secondsPast: number): void {
-        this.posX -= this.velocityX * secondsPast
-    }
-
-    moveRight(secondsPast: number): void {
-        this.posX += this.velocityX * secondsPast
     }
 
     roll(secondsPast: number): void {
     }
 
     fall(secondsPast: number) {
-        this.velocityY += this.gravity
-        this.posY += this.velocityY * secondsPast * this.gravity
+        this.fallSpeed += this.gravity
+        this.posY += this.fallSpeed * secondsPast * this.gravity
     }
 
     update(secondsPassed: number) {
-        if(this.posY + this.height < 600)
+        if (this.posY + this.height < 600)
             this.fall(secondsPassed)
-        if(this.posY + this.height > 600)
+        if (this.posY + this.height > 600)
             this.posY = 600 - this.height
-        if(this.random > 0.5)
-            this.moveLeft(secondsPassed)
-        else this.moveRight(secondsPassed)
+    }
+
+    draw() {
+        this.context.fillStyle = this.collides ? '#a66c6c' : '#ba81c7'
+        this.context.strokeStyle = '#000000'
+        this.context.lineWidth = 2
+        this.context.fillRect(this.posX, this.posY, this.width, this.height)
+        this.context.strokeRect(this.posX, this.posY, this.width, this.height)
+    }
+
+    updateMovement(secondsPast: number): void {
     }
 }

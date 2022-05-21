@@ -9,15 +9,18 @@ let fps
 let canvas: HTMLCanvasElement
 let context: CanvasRenderingContext2D
 let player: Player
-let enemies: Enemy[]
+let enemy: Enemy
 window.onload = init
 
 
 function init() {
     canvas = document.getElementById('gridCanvas') as HTMLCanvasElement
     context = canvas.getContext('2d') as CanvasRenderingContext2D
-    player = new Player(context, 600, 300, 300, 500, 50, 50 )
-    enemies = InitHelper.spawnEnemies(5, context)
+    player = new Player(context, 500, 300, 300, 500, 50, 50 )
+    player.init()
+    enemy = new Enemy(context, 1000, 300, 300, 500, 50, 50 )
+
+
     window.requestAnimationFrame(loop)
 }
 
@@ -26,10 +29,10 @@ function loop(timeStamp: number){
     oldTimeStamp = timeStamp
     secondsPassed = Math.min(secondsPassed, 0.1)
     context.clearRect(0, 0, canvas.width, canvas.height)
-    DrawHelper.draw([player, ...enemies])
+    DrawHelper.draw([player, enemy])
     DrawHelper.drawLevel(context)
     player.update(secondsPassed)
-    enemies.forEach(it=>it.update(secondsPassed))
+    enemy.update(secondsPassed)
     drawFps()
     window.requestAnimationFrame(loop)
 }
