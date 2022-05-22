@@ -1,10 +1,14 @@
 export class GameObject {
     context: CanvasRenderingContext2D
-    gravity: number = 0.6
+    gravity: number = 10
+    velocityX: number = 0
+    velocityY: number = 100
+    inAir: boolean = false
     posX: number
     posY: number
     movementSpeed: number
     fallSpeed: number
+    jumpSpeed: number
     width: number
     height: number
     collides: boolean = false
@@ -15,6 +19,7 @@ export class GameObject {
         y: number,
         movementSpeed: number,
         fallSpeed: number,
+        jumpSpeed: number,
         width: number,
         height: number
         ) {
@@ -23,6 +28,7 @@ export class GameObject {
         this.posY = y
         this.movementSpeed = movementSpeed
         this.fallSpeed = fallSpeed
+        this.jumpSpeed = jumpSpeed
         this.width = width
         this.height = height
     }
@@ -33,6 +39,17 @@ export class GameObject {
         this.context.lineWidth = 2
         this.context.fillRect(this.posX, this.posY, this.width, this.height)
         this.context.strokeRect(this.posX, this.posY, this.width, this.height)
+    }
+
+    moveLeft(): void{
+        this.velocityX = -this.movementSpeed
+    }
+    moveRight(): void{
+        this.velocityX = this.movementSpeed
+    }
+
+    stopMovingXAxis(): void {
+        this.velocityX = 0
     }
 
     update(secondsPassed: number): void {}
