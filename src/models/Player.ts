@@ -3,62 +3,80 @@ import {Character} from "./Character";
 
 export class Player extends GameObject implements Character {
 
-    moveLeft: boolean = false
-    moveRight: boolean = false
+    moveLeftIndicator: boolean = false
+    moveRightIndicator: boolean = false
+    jumpIndicator: boolean = false
 
     init(){
         this.initMovement()
     }
 
-    jump(secondsPast: number): void {
-        this.posY -= 100 * secondsPast
-    }
-
-    move(secondsPast: number): void {
-        if (this.moveLeft)
-            this.posX -= this.movementSpeed * secondsPast
-        else if (this.moveRight)
-            this.posX += this.movementSpeed * secondsPast
-    }
-
-    roll(secondsPast: number): void {
-    }
-
-    fall(secondsPast: number) {
-        this.fallSpeed += this.gravity
-        this.posY += this.fallSpeed * secondsPast * this.gravity
-    }
-
-    updateMovement(secondsPast: number) {
-        this.move(secondsPast)
-    }
-
     update(secondsPassed: number) {
-        if (this.posY + this.height < 600) // fall
-            this.fall(secondsPassed)
-        if (this.posY + this.height > 600) { // hit ground
-            this.posY = 600 - this.height
-        }
+        this.draw()
+        this.applyVelocity(secondsPassed)
         this.updateMovement(secondsPassed)
     }
 
+    updateMovement(secondsPast: number) {
+        if (this.moveLeftIndicator)
+            this.moveLeft()
+        else if (this.moveRightIndicator)
+            this.moveRight()
+        else if(!(this.moveRightIndicator && this.moveLeftIndicator))
+            this.stopMovingXAxis()
+        // jumping
+        if(this.jumpIndicator){
+            this.jump()
+        }
+    }
+
+    applyVelocity(secondsPassed: number) {
+        this.posX += this.velocityX * secondsPassed
+        this.fall(secondsPassed)
+        if (this.posY + this.height > 600) { // hit ground
+            this.posY = 600 - this.height
+            this.velocityY = this.fallSpeed
+            this.inAir = false
+        } else  this.inAir = true
+    }
+
+
     initMovement(){
+        window.addEventListener('keypress', ev => {
+            if(ev.key === 'w' && !this.inAir){
+                this.jumpIndicator = true
+            }
+        })
         window.addEventListener('keydown', (e)=>{
             switch (e.key) {
-                case 'a': this.moveLeft = true
+                case 'a': this.moveLeftIndicator = true
                     break;
-                case 'd': this.moveRight = true
+                case 'd': this.moveRightIndicator = true
                     break;
             }
         })
         window.addEventListener('keyup', (e)=>{
             switch (e.key) {
-                case 'a': this.moveLeft = false
+                case 'a': this.moveLeftIndicator = false
                     break;
-                case 'd': this.moveRight = false
+                case 'd': this.moveRightIndicator = false
                     break;
             }
         })
+    }
+
+    roll(secondsPast: number): void {
+    }
+
+    // for jumping
+    jump(): void {
+        this.velocityY = -300
+        this.jumpIndicator = false
+    }
+
+    fall(secondsPassed: number) {
+        this.velocityY += this.gravity
+        this.posY += this.velocityY * secondsPassed
     }
 
 }

@@ -1,8 +1,9 @@
 import {Player} from "./models/Player";
 import {Enemy} from "./models/Enemy";
-import {InitHelper} from "./helpers/InitHelper";
 import {DrawHelper} from "./helpers/DrawHelper";
 
+const WIDTH: number = 1800
+const HEIGHT: number = 800
 let secondsPassed: number = 0
 let oldTimeStamp: number = 0
 let fps
@@ -16,11 +17,11 @@ window.onload = init
 function init() {
     canvas = document.getElementById('gridCanvas') as HTMLCanvasElement
     context = canvas.getContext('2d') as CanvasRenderingContext2D
-    player = new Player(context, 500, 300, 300, 500, 50, 50 )
+    canvas.width = WIDTH
+    canvas.height = HEIGHT
+    player = new Player(context, 500, 300, 300, 500, 500,  50, 50 )
     player.init()
-    enemy = new Enemy(context, 1000, 300, 300, 500, 50, 50 )
-
-
+    enemy = new Enemy(context, 1000, 300, 300, 500, 500,  50, 50 )
     window.requestAnimationFrame(loop)
 }
 
@@ -29,10 +30,9 @@ function loop(timeStamp: number){
     oldTimeStamp = timeStamp
     secondsPassed = Math.min(secondsPassed, 0.1)
     context.clearRect(0, 0, canvas.width, canvas.height)
-    DrawHelper.draw([player, enemy])
-    DrawHelper.drawLevel(context)
     player.update(secondsPassed)
     enemy.update(secondsPassed)
+    DrawHelper.drawLevel(context)
     drawFps()
     window.requestAnimationFrame(loop)
 }

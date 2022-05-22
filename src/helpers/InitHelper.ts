@@ -11,6 +11,7 @@ export class InitHelper {
                     300,
                     100,
                     500,
+                    500,
                     30,
                     30
                 )
