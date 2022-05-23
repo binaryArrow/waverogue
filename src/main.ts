@@ -1,6 +1,7 @@
 import {Player} from "./models/Player";
 import {Enemy} from "./models/Enemy";
 import {DrawHelper} from "./helpers/DrawHelper";
+import {GameObject} from "./models/GameObject";
 
 const WIDTH: number = 1800
 const HEIGHT: number = 800
@@ -29,6 +30,7 @@ function loop(timeStamp: number){
     secondsPassed = (timeStamp - oldTimeStamp) / 1000
     oldTimeStamp = timeStamp
     secondsPassed = Math.min(secondsPassed, 0.1)
+    DrawHelper.detectCollisions([player, enemy])
     context.clearRect(0, 0, canvas.width, canvas.height)
     player.update(secondsPassed)
     enemy.update(secondsPassed)
