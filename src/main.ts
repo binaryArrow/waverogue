@@ -1,7 +1,7 @@
 import {Player} from "./models/Player";
 import {Enemy} from "./models/Enemy";
 import {DrawHelper} from "./helpers/DrawHelper";
-import {GameObject} from "./models/GameObject";
+import {LevelHelper} from "./helpers/LevelHelper";
 
 const WIDTH: number = 1800
 const HEIGHT: number = 800
@@ -12,6 +12,7 @@ let canvas: HTMLCanvasElement
 let context: CanvasRenderingContext2D
 let player: Player
 let enemy: Enemy
+let levelHelper: LevelHelper
 window.onload = init
 
 
@@ -21,8 +22,8 @@ function init() {
     canvas.width = WIDTH
     canvas.height = HEIGHT
     player = new Player(context, 500, 300, 300, 500, 500,  50, 50 )
-    player.init()
     enemy = new Enemy(context, 1000, 300, 300, 500, 500,  50, 50 )
+    levelHelper = new LevelHelper(context, [player, enemy])
     window.requestAnimationFrame(loop)
 }
 
@@ -34,10 +35,11 @@ function loop(timeStamp: number){
     context.clearRect(0, 0, canvas.width, canvas.height)
     player.update(secondsPassed)
     enemy.update(secondsPassed)
-    DrawHelper.drawLevel(context)
+    levelHelper.update(secondsPassed)
     drawFps()
     window.requestAnimationFrame(loop)
 }
+
 function drawFps(){
     fps = Math.round(1 / secondsPassed)
     context.font = '15px Arial';

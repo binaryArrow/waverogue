@@ -7,7 +7,17 @@ export class Player extends GameObject implements Character {
     moveRightIndicator: boolean = false
     jumpIndicator: boolean = false
 
-    init(){
+    constructor(
+        context: CanvasRenderingContext2D,
+        x: number,
+        y: number,
+        movementSpeed: number,
+        fallSpeed: number,
+        jumpSpeed: number,
+        width: number,
+        height: number
+    ){
+        super(context, x, y, movementSpeed, fallSpeed, jumpSpeed, width, height)
         this.initMovement()
     }
 

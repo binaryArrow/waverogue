@@ -6,8 +6,8 @@ export class GameObject {
     inAir: boolean = false
     posX: number
     posY: number
-    movementSpeed: number
-    fallSpeed: number
+    movementSpeed: number = 0
+    fallSpeed: number = 0
     jumpSpeed: number
     width: number
     height: number
