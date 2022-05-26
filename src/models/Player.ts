@@ -23,8 +23,8 @@ export class Player extends GameObject implements Character {
 
     update(secondsPassed: number) {
         this.draw()
-        this.applyVelocity(secondsPassed)
         this.updateMovement(secondsPassed)
+        this.applyVelocity(secondsPassed)
     }
 
     updateMovement(secondsPast: number) {
@@ -43,11 +43,11 @@ export class Player extends GameObject implements Character {
     applyVelocity(secondsPassed: number) {
         this.posX += this.velocityX * secondsPassed
         this.fall(secondsPassed)
-        if (this.posY + this.height > 600) { // hit ground
-            this.posY = 600 - this.height
-            this.velocityY = this.fallSpeed
-            this.inAir = false
-        } else  this.inAir = true
+        // if (this.posY + this.height > 600) { // hit ground
+        //     this.posY = 600 - this.height
+        //     this.velocityY = this.fallSpeed
+        //     this.inAir = false
+        // } else  this.inAir = true
     }
 
 
@@ -86,7 +86,7 @@ export class Player extends GameObject implements Character {
 
     fall(secondsPassed: number) {
         this.velocityY += this.gravity
-        this.posY += this.velocityY * secondsPassed
+        this.posY += Math.floor(this.velocityY * secondsPassed)
     }
 
 }
