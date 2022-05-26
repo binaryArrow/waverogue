@@ -16,7 +16,7 @@ export class Player extends GameObject implements Character {
         jumpSpeed: number,
         width: number,
         height: number
-    ){
+    ) {
         super(context, x, y, movementSpeed, fallSpeed, jumpSpeed, width, height)
         this.initMovement()
     }
@@ -32,10 +32,10 @@ export class Player extends GameObject implements Character {
             this.moveLeft()
         else if (this.moveRightIndicator)
             this.moveRight()
-        else if(!(this.moveRightIndicator && this.moveLeftIndicator))
+        else if (!(this.moveRightIndicator && this.moveLeftIndicator))
             this.stopMovingXAxis()
         // jumping
-        if(this.jumpIndicator){
+        if (this.jumpIndicator) {
             this.jump()
         }
     }
@@ -43,33 +43,32 @@ export class Player extends GameObject implements Character {
     applyVelocity(secondsPassed: number) {
         this.posX += this.velocityX * secondsPassed
         this.fall(secondsPassed)
-        // if (this.posY + this.height > 600) { // hit ground
-        //     this.posY = 600 - this.height
-        //     this.velocityY = this.fallSpeed
-        //     this.inAir = false
-        // } else  this.inAir = true
     }
 
 
-    initMovement(){
+    initMovement() {
         window.addEventListener('keypress', ev => {
-            if(ev.key === 'w' && !this.inAir){
+            if (ev.key === 'w' && !this.inAir) {
                 this.jumpIndicator = true
             }
         })
-        window.addEventListener('keydown', (e)=>{
+        window.addEventListener('keydown', (e) => {
             switch (e.key) {
-                case 'a': this.moveLeftIndicator = true
+                case 'a':
+                    this.moveLeftIndicator = true
                     break;
-                case 'd': this.moveRightIndicator = true
+                case 'd':
+                    this.moveRightIndicator = true
                     break;
             }
         })
-        window.addEventListener('keyup', (e)=>{
+        window.addEventListener('keyup', (e) => {
             switch (e.key) {
-                case 'a': this.moveLeftIndicator = false
+                case 'a':
+                    this.moveLeftIndicator = false
                     break;
-                case 'd': this.moveRightIndicator = false
+                case 'd':
+                    this.moveRightIndicator = false
                     break;
             }
         })
@@ -82,6 +81,7 @@ export class Player extends GameObject implements Character {
     jump(): void {
         this.velocityY = -300
         this.jumpIndicator = false
+        this.inAir = true
     }
 
     fall(secondsPassed: number) {
