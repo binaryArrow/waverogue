@@ -3,7 +3,7 @@ export class GameObject {
     gravity: number = 10
     velocityX: number = 0
     velocityY: number = 100
-    inAir: boolean = false
+    inAir: boolean = true
     posX: number
     posY: number
     movementSpeed: number = 0

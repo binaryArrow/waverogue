@@ -1,6 +1,6 @@
 import {Level1} from "../levels/Level1";
 import {GameObject} from "../models/GameObject";
-import {Line} from "../models/Line";
+import {Rect} from "../models/Rect";
 
 export class LevelHelper {
     level1: Level1
