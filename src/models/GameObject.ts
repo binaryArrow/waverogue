@@ -18,7 +18,6 @@ export class GameObject {
         x: number,
         y: number,
         movementSpeed: number,
-        fallSpeed: number,
         jumpSpeed: number,
         width: number,
         height: number
@@ -27,10 +26,10 @@ export class GameObject {
         this.posX = x
         this.posY = y
         this.movementSpeed = movementSpeed
-        this.fallSpeed = fallSpeed
         this.jumpSpeed = jumpSpeed
         this.width = width
         this.height = height
+        this.fallSpeed = jumpSpeed - 100
     }
 
     draw(){

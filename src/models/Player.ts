@@ -12,12 +12,11 @@ export class Player extends GameObject implements Character {
         x: number,
         y: number,
         movementSpeed: number,
-        fallSpeed: number,
         jumpSpeed: number,
         width: number,
         height: number
     ) {
-        super(context, x, y, movementSpeed, fallSpeed, jumpSpeed, width, height)
+        super(context, x, y, movementSpeed, jumpSpeed, width, height)
         this.initMovement()
     }
 
@@ -25,6 +24,7 @@ export class Player extends GameObject implements Character {
         this.draw()
         this.updateMovement(secondsPassed)
         this.applyVelocity(secondsPassed)
+        console.log(this.posY)
     }
 
     updateMovement(secondsPast: number) {
@@ -79,7 +79,7 @@ export class Player extends GameObject implements Character {
 
     // for jumping
     jump(): void {
-        this.velocityY = -300
+        this.velocityY = -this.jumpSpeed
         this.jumpIndicator = false
         this.inAir = true
     }
