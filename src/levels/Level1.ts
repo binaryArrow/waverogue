@@ -11,21 +11,31 @@ export class Level1 {
         this.gameObjects = gameObjects
         this.context = context
         this.mapElemts.push(
-            new Ground(0, 600, 1800, 600, this.context)
+            new Ground(0, 600, 1800, 600, this.context),
+            // new Ground(100, 550, 300, 550, this.context)
         )
     }
 
     update(secondsPassed: number) {
-        this.mapElemts.forEach(element =>{
-            if(element instanceof Ground){
-                // TODO: check collusions on ground and walls...
+        this.mapElemts.forEach(element => {
+            if (element instanceof Ground) {
+                if (element.checkGameObjectCollideWithGround(this.gameObjects[0])) {
+                    console.log("collides")
+                    this.gameObjects[0].posY = element.y1 - this.gameObjects[0].height
+                    this.gameObjects[0].velocityY = this.gameObjects[0].fallSpeed
+                    this.gameObjects[0].inAir = false
+                } else{
+                    this.gameObjects[0].inAir = true
+                }
+
+                console.log(this.gameObjects[0].inAir)
             }
             element.draw()
         })
         this.draw()
     }
 
-    draw(){
+    draw() {
         this.context.strokeStyle = '#000000'
         this.context.lineWidth = 5
     }
