@@ -22,8 +22,8 @@ export class Collusion{
         })
         function collusionCheck(object: GameObject, mapElement: Rect): boolean{
             return !(object.posX > mapElement.width + mapElement.x ||
+                object.posY + object.height > mapElement.height + mapElement.y ||
                 mapElement.x > object.width + object.posX ||
-                object.posY > mapElement.height + mapElement.y ||
                 mapElement.y > object.height + object.posY)
         }
     }

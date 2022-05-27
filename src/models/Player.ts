@@ -24,7 +24,7 @@ export class Player extends GameObject implements Character {
         this.draw()
         this.updateMovement(secondsPassed)
         this.applyVelocity(secondsPassed)
-        console.log(this.posY)
+        console.log(this.velocityY)
     }
 
     updateMovement(secondsPast: number) {
