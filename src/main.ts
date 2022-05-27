@@ -33,9 +33,9 @@ function loop(timeStamp: number){
     secondsPassed = Math.min(secondsPassed, 0.1)
     DrawHelper.detectCollisions([player, enemy])
     context.clearRect(0, 0, canvas.width, canvas.height)
-    levelHelper.update(secondsPassed)
     player.update(secondsPassed)
     enemy.update(secondsPassed)
+    levelHelper.update(secondsPassed)
     drawFps()
     window.requestAnimationFrame(loop)
 }
