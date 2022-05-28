@@ -29,7 +29,7 @@ export class GameObject {
         this.jumpSpeed = jumpSpeed
         this.width = width
         this.height = height
-        this.fallSpeed = jumpSpeed - 100
+        this.fallSpeed = this.velocityY
     }
 
     draw(){
