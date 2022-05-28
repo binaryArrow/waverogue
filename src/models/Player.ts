@@ -24,7 +24,6 @@ export class Player extends GameObject implements Character {
         this.draw()
         this.updateMovement(secondsPassed)
         this.applyVelocity(secondsPassed)
-        console.log(this.velocityY)
     }
 
     updateMovement(secondsPast: number) {
@@ -84,7 +83,8 @@ export class Player extends GameObject implements Character {
         this.inAir = true
     }
 
-    fall(secondsPassed: number) {
+    fall(secondsPassed: number){
+        secondsPassed = Math.min(secondsPassed, 0.012) // this piece of shit prevents falling when changing tabs
         this.velocityY += this.gravity
         this.posY += Math.floor(this.velocityY * secondsPassed)
     }

@@ -15,7 +15,7 @@ export class Level1 {
         this.mapElemts.push(
             new Ground(0, 600, 1800, 5, this.context),
             new Ground(100, 550, 300, 5, this.context),
-            new Ground(100, 420, 300, 5, this.context)
+            new Ground(100, 500, 300, 5, this.context)
         )
         this.collusion = new Collusion(gameObjects, this.mapElemts)
         this.context.strokeStyle = '#000000'
@@ -25,6 +25,7 @@ export class Level1 {
     update(secondsPassed: number) {
         this.collusion.checkGameObjectCollideWithGround()
         this.draw()
+        console.log(this.gameObjects[0].inAir)
     }
 
     draw() {
