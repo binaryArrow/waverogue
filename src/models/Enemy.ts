@@ -10,13 +10,7 @@ export class Enemy extends GameObject implements Character {
 
     applyVelocity(secondsPassed: number) {
         this.posX += this.velocityX * secondsPassed
-        this.velocityY += this.gravity
-        this.posY += this.velocityY * secondsPassed // applied velocity
-        if (this.posY + this.height > 600) { // hit ground
-            this.posY = 600 - this.height
-            this.velocityY = this.fallSpeed
-            this.inAir = false
-        } else  this.inAir = true
+        this.fall(secondsPassed)
     }
 
 
@@ -32,11 +26,6 @@ export class Enemy extends GameObject implements Character {
     }
 
     roll(secondsPast: number): void {
-    }
-
-    fall(secondsPassed: number) {
-        this.velocityY += this.gravity
-        this.posY += this.velocityY * secondsPassed
     }
 
     jump(): void {

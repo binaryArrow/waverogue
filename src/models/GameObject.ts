@@ -12,6 +12,9 @@ export class GameObject {
     width: number
     height: number
     collides: boolean = false
+    moveLeftIndicator: boolean = false
+    moveRightIndicator: boolean = false
+    jumpIndicator: boolean = false
 
     constructor(
         context: CanvasRenderingContext2D,
@@ -49,6 +52,12 @@ export class GameObject {
 
     stopMovingXAxis(): void {
         this.velocityX = 0
+    }
+
+    fall(secondsPassed: number){
+        secondsPassed = Math.min(secondsPassed, 0.012) // this piece of shit prevents falling when changing tabs
+        this.velocityY += this.gravity
+        this.posY += Math.floor(this.velocityY * secondsPassed)
     }
 
     update(secondsPassed: number): void {}
