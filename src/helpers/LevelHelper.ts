@@ -2,6 +2,7 @@ import {Level1} from "../levels/Level1";
 import {GameObject} from "../models/GameObject";
 import {Ground} from "../models/levelmodels/Ground";
 import {Wall} from "../models/levelmodels/Wall";
+import {Top} from "../models/levelmodels/Top";
 
 export class LevelHelper {
     level1: Level1
@@ -12,7 +13,8 @@ export class LevelHelper {
             new Ground(100, 700, 300, 10, context),
             new Ground(800, 700, 300, 10, context),
             new Wall(800, 730, 10, 150, context),
-            new Wall(800, 490, 10, 150, context)
+            new Wall(800, 490, 10, 150, context),
+            new Top(800, 640, 10, 1, context)
         ])
     }
 
