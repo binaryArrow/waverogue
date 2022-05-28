@@ -3,10 +3,6 @@ import {Character} from "./Character";
 
 export class Player extends GameObject implements Character {
 
-    moveLeftIndicator: boolean = false
-    moveRightIndicator: boolean = false
-    jumpIndicator: boolean = false
-
     constructor(
         context: CanvasRenderingContext2D,
         x: number,
@@ -81,12 +77,6 @@ export class Player extends GameObject implements Character {
         this.velocityY = -this.jumpSpeed
         this.jumpIndicator = false
         this.inAir = true
-    }
-
-    fall(secondsPassed: number){
-        secondsPassed = Math.min(secondsPassed, 0.012) // this piece of shit prevents falling when changing tabs
-        this.velocityY += this.gravity
-        this.posY += Math.floor(this.velocityY * secondsPassed)
     }
 
 }
