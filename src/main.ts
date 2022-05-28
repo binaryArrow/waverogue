@@ -24,7 +24,7 @@ function init() {
     canvas.height = HEIGHT
     player = new Player(context, 500, 300, 300, 300, 50, 50)
     enemy = new Enemy(context, 1000, 300, 300, 300, 50, 50)
-    levelHelper = new LevelHelper(context, [player, enemy])
+    levelHelper = new LevelHelper(context, [player])
     window.requestAnimationFrame(update)
 }
 

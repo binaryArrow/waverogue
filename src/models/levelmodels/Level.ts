@@ -19,6 +19,7 @@ export class Level{
 
     update(secondsPassed: number){
         this.collusion.applyGroundCollisions()
+        this.collusion.applyWallCollisions()
         this.draw()
     }
 
