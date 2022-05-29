@@ -1,9 +1,9 @@
 import {GameObject} from "../models/GameObject";
-import {Ground} from "../models/levelmodels/Ground";
-import {MapElement} from "../models/levelmodels/MapElement";
-import {Wall} from "../models/levelmodels/Wall";
-import {WallCollusionpoint} from "../models/levelmodels/WallCollusionpoint";
 import {Top} from "../models/levelmodels/Top";
+import {MapElement} from "../models/levelmodels/MapElement";
+import {StaticMapObject} from "../models/levelmodels/StaticMapObject";
+import {WallCollusionpoint} from "../models/levelmodels/WallCollusionpoint";
+import {Bottom} from "../models/levelmodels/Bottom";
 
 export class Collusion {
     gameObjects: GameObject[]
@@ -16,7 +16,7 @@ export class Collusion {
 
     applyGroundCollisions(): void {
         this.mapElements.forEach(mapElement => {
-            if (mapElement instanceof Ground) {
+            if (mapElement instanceof Top) {
                 this.gameObjects.forEach(gameObject => {
                     if (gameObject.velocityY > 0 && collusionCheckGround(gameObject, mapElement)) {
                         mapElement.collides = true
@@ -38,7 +38,7 @@ export class Collusion {
 
     applyWallCollisions(): void {
         this.mapElements.forEach(mapElement => {
-            if (mapElement instanceof Wall) {
+            if (mapElement instanceof StaticMapObject) {
                 this.gameObjects.forEach(gameObject => {
                     switch (this.checkLeftOrRightCollusion(gameObject, mapElement)) {
                         case WallCollusionpoint.LEFT: {
@@ -84,7 +84,7 @@ export class Collusion {
 
     applyTopCollusion() {
         this.mapElements.forEach(mapElement => {
-            if (mapElement instanceof Top) {
+            if (mapElement instanceof Bottom) {
                 this.gameObjects.forEach(gameObject => {
                     if (gameObject.velocityY < 0 && collusionCheckTop(gameObject, mapElement) && !this.checkLeftOrRightCollusion(gameObject, mapElement)) {
                         mapElement.collides = true
