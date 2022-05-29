@@ -9,12 +9,11 @@ export class LevelHelper {
 
     constructor(context: CanvasRenderingContext2D, gameObjects: GameObject[]) {
         this.level1 = new Level1(context, gameObjects, [
-            new Ground(0, 750, 1800, 10, context),
-            new Ground(100, 700, 300, 10, context),
-            new Ground(800, 700, 300, 10, context),
+            new Wall(0, 750, 1800, 10, context),
+            new Wall(100, 700, 300, 10, context),
+            new Wall(800, 700, 300, 10, context),
             new Wall(800, 730, 10, 150, context),
             new Wall(800, 490, 10, 150, context),
-            new Top(800, 640, 10, 1, context)
         ])
     }
 
