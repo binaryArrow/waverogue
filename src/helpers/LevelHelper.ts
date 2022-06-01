@@ -1,7 +1,7 @@
 import {Level1} from "../levels/Level1";
 import {GameObject} from "../models/GameObject";
 import {Top} from "../models/levelmodels/Top";
-import {StaticMapObject} from "../models/levelmodels/StaticMapObject";
+import {Wall} from "../models/levelmodels/Wall";
 import {Bottom} from "../models/levelmodels/Bottom";
 
 export class LevelHelper {
@@ -12,9 +12,9 @@ export class LevelHelper {
             new Top(0, 750, 1800, 10, context),
             new Top(100, 700, 600, 10, context),
             new Top(900, 700, 300, 10, context),
-            new StaticMapObject(800, 730, 10, 150, context),
-            new StaticMapObject(800, 490, 10, 150, context),
-            new StaticMapObject(1400, 650, 10, 300, context),
+            new Wall(800, 730, 10, 150, context),
+            new Wall(800, 490, 10, 150, context),
+            new Wall(1400, 650, 10, 300, context),
             new Bottom(800, 640, 10, 1, context)
         ])
     }
