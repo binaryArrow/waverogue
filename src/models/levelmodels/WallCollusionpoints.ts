@@ -1,4 +1,4 @@
-export enum WallCollusionpoint{
+export enum WallCollusionpoints{
     LEFT,
     RIGHT,
     TOP,

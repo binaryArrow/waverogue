@@ -1,8 +1,8 @@
 import {GameObject} from "../models/GameObject";
 import {Top} from "../models/levelmodels/Top";
 import {MapElement} from "../models/levelmodels/MapElement";
-import {StaticMapObject} from "../models/levelmodels/StaticMapObject";
-import {WallCollusionpoint} from "../models/levelmodels/WallCollusionpoint";
+import {Wall} from "../models/levelmodels/Wall";
+import {WallCollusionpoints} from "../models/levelmodels/WallCollusionpoints";
 import {Bottom} from "../models/levelmodels/Bottom";
 
 export class Collusion {
@@ -38,15 +38,15 @@ export class Collusion {
 
     applyWallCollisions(): void {
         this.mapElements.forEach(mapElement => {
-            if (mapElement instanceof StaticMapObject) {
+            if (mapElement instanceof Wall) {
                 this.gameObjects.forEach(gameObject => {
                     switch (this.checkLeftOrRightCollusion(gameObject, mapElement)) {
-                        case WallCollusionpoint.LEFT: {
+                        case WallCollusionpoints.LEFT: {
                             mapElement.collides = true
                             gameObject.posX = mapElement.x - gameObject.width
                             break;
                         }
-                        case WallCollusionpoint.RIGHT: {
+                        case WallCollusionpoints.RIGHT: {
                             mapElement.collides = true
                             gameObject.posX = mapElement.x + mapElement.width
                             break;
@@ -62,7 +62,7 @@ export class Collusion {
 
     }
 
-    checkLeftOrRightCollusion(object: GameObject, mapElement: MapElement): WallCollusionpoint {
+    checkLeftOrRightCollusion(object: GameObject, mapElement: MapElement): WallCollusionpoints {
         // check if gamobject collides with wall
         if (!(object.posX > mapElement.width + mapElement.x ||
             object.posY > mapElement.height + mapElement.y ||
@@ -72,14 +72,14 @@ export class Collusion {
             // check if rect the right or left side and return the side where rect hits wall
             if (object.posX + object.width <= mapElement.x + mapElement.width){
                 console.log("left collusion")
-                return WallCollusionpoint.LEFT
+                return WallCollusionpoints.LEFT
             }
             else if (object.posX >= mapElement.x - mapElement.width){
                 console.log("right collusion")
-                return WallCollusionpoint.RIGHT
+                return WallCollusionpoints.RIGHT
             }
         }
-        return WallCollusionpoint.NONE
+        return WallCollusionpoints.NONE
     }
 
     applyTopCollusion() {
@@ -88,8 +88,8 @@ export class Collusion {
                 this.gameObjects.forEach(gameObject => {
                     if (gameObject.velocityY < 0 &&
                         collusionCheckTop(gameObject, mapElement) &&
-                        this.checkLeftOrRightCollusion(gameObject, mapElement) != WallCollusionpoint.LEFT &&
-                        this.checkLeftOrRightCollusion(gameObject, mapElement) != WallCollusionpoint.RIGHT
+                        this.checkLeftOrRightCollusion(gameObject, mapElement) != WallCollusionpoints.LEFT &&
+                        this.checkLeftOrRightCollusion(gameObject, mapElement) != WallCollusionpoints.RIGHT
                     ) {
                         mapElement.collides = true
                         gameObject.posY = mapElement.y + mapElement.height
