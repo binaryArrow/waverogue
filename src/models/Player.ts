@@ -1,5 +1,6 @@
 import {GameObject} from "./GameObject";
 import {Character} from "./Character";
+import {WallCollusionpoints} from "./levelmodels/WallCollusionpoints";
 
 export class Player extends GameObject implements Character {
 
