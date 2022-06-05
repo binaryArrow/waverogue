@@ -1,8 +1,9 @@
 import {GameObject} from "./GameObject";
-import {Character} from "./Character";
-import {WallCollusionpoints} from "./levelmodels/WallCollusionpoints";
+import {Character, FaceDirection} from "./Character";
 
 export class Player extends GameObject implements Character {
+    rollIndicator: boolean = false
+    faceDirection: FaceDirection = FaceDirection.RIGHT
 
     constructor(
         context: CanvasRenderingContext2D,
@@ -16,6 +17,7 @@ export class Player extends GameObject implements Character {
         super(context, x, y, movementSpeed, jumpSpeed, width, height)
         this.initMovement()
     }
+
 
     update(secondsPassed: number) {
         this.draw()
@@ -34,6 +36,9 @@ export class Player extends GameObject implements Character {
         if (this.jumpIndicator) {
             this.jump()
         }
+        if (this.rollIndicator) {
+            this.roll(this.faceDirection)
+        }
     }
 
     applyVelocity(secondsPassed: number) {
@@ -47,14 +52,19 @@ export class Player extends GameObject implements Character {
             if (ev.key === 'w' && !this.inAir) {
                 this.jumpIndicator = true
             }
+            if (ev.key === ' ') {
+                this.rollIndicator = true
+            }
         })
         window.addEventListener('keydown', (e) => {
             switch (e.key) {
                 case 'a':
                     this.moveLeftIndicator = true
+                    this.faceDirection = FaceDirection.LEFT
                     break;
                 case 'd':
                     this.moveRightIndicator = true
+                    this.faceDirection = FaceDirection.RIGHT
                     break;
             }
         })
@@ -70,14 +80,19 @@ export class Player extends GameObject implements Character {
         })
     }
 
-    roll(secondsPast: number): void {
+    roll(faceDirection: FaceDirection): void {
+        if (faceDirection === FaceDirection.RIGHT)
+            this.velocityX += 500
+        if (faceDirection === FaceDirection.LEFT)
+            this.velocityX -= 500
+        this.rollIndicator = false
     }
 
-    // for jumping
     jump(): void {
         this.velocityY = -this.jumpSpeed
         this.jumpIndicator = false
         this.inAir = true
     }
+
 
 }
