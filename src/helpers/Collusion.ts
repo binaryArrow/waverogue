@@ -4,6 +4,7 @@ import {MapElement} from "../models/levelmodels/MapElement";
 import {Wall} from "../models/levelmodels/Wall";
 import {WallCollusionpoints} from "../models/levelmodels/WallCollusionpoints";
 import {Bottom} from "../models/levelmodels/Bottom";
+import {StaticMapObject} from "../models/levelmodels/StaticMapObject";
 
 export class Collusion {
     gameObjects: GameObject[]
@@ -12,6 +13,14 @@ export class Collusion {
     constructor(gameObjects: GameObject[], mapElements: MapElement[]) {
         this.gameObjects = gameObjects
         this.mapElements = mapElements
+    }
+
+    applyStaticObjectCollusion(){
+        this.mapElements.forEach(mapElement => {
+            if(mapElement instanceof StaticMapObject) {
+
+            }
+        })
     }
 
     applyGroundCollisions(): void {
