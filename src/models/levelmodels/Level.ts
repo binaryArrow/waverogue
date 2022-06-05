@@ -18,9 +18,9 @@ export class Level{
     }
 
     update(secondsPassed: number){
-        this.collusion.applyGroundCollisions()
-        this.collusion.applyWallCollisions()
         this.collusion.applyTopCollusion()
+        this.collusion.applyWallCollisions()
+        this.collusion.applyBottomCollusion()
         this.draw()
     }
 

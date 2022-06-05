@@ -15,19 +15,11 @@ export class Collusion {
         this.mapElements = mapElements
     }
 
-    applyStaticObjectCollusion(){
-        this.mapElements.forEach(mapElement => {
-            if(mapElement instanceof StaticMapObject) {
-
-            }
-        })
-    }
-
-    applyGroundCollisions(): void {
+    applyTopCollusion(): void {
         this.mapElements.forEach(mapElement => {
             if (mapElement instanceof Top) {
                 this.gameObjects.forEach(gameObject => {
-                    if (gameObject.velocityY > 0 && collusionCheckGround(gameObject, mapElement)) {
+                    if (gameObject.velocityY > 0 && collusionCheckTop(gameObject, mapElement)) {
                         mapElement.collides = true
                         gameObject.posY = mapElement.y - gameObject.height
                         gameObject.velocityY = gameObject.fallSpeed
@@ -37,7 +29,7 @@ export class Collusion {
             }
         })
 
-        function collusionCheckGround(object: GameObject, mapElement: MapElement): boolean {
+        function collusionCheckTop(object: GameObject, mapElement: MapElement): boolean {
             return !(object.posX > mapElement.width + mapElement.x ||
                 object.posY + object.height > mapElement.height + mapElement.y ||
                 mapElement.x > object.width + object.posX ||
@@ -103,12 +95,12 @@ export class Collusion {
         return WallCollusionpoints.NONE
     }
 
-    applyTopCollusion() {
+    applyBottomCollusion() {
         this.mapElements.forEach(mapElement => {
             if (mapElement instanceof Bottom) {
                 this.gameObjects.forEach(gameObject => {
                     if (gameObject.velocityY < 0 &&
-                        collusionCheckTop(gameObject, mapElement) &&
+                        collusionCheckBot(gameObject, mapElement) &&
                         this.checkLeftOrRightCollusion(gameObject, mapElement) !== WallCollusionpoints.LEFT &&
                         this.checkLeftOrRightCollusion(gameObject, mapElement) !== WallCollusionpoints.RIGHT
                     ) {
@@ -120,7 +112,7 @@ export class Collusion {
             }
         })
 
-        function collusionCheckTop(object: GameObject, mapElement: MapElement): boolean {
+        function collusionCheckBot(object: GameObject, mapElement: MapElement): boolean {
             return !(object.posX > mapElement.width + mapElement.x ||
                 object.posY > mapElement.height + mapElement.y ||
                 mapElement.x > object.width + object.posX ||

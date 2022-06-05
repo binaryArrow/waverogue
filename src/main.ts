@@ -21,7 +21,7 @@ function init() {
     context = canvas.getContext('2d') as CanvasRenderingContext2D
     canvas.width = WIDTH
     canvas.height = HEIGHT
-    player = new Player(context, 500, 300, 300, 300, 50, 50)
+    player = new Player(context, 0, 550, 300, 300, 20, 50)
     enemy = new Enemy(context, 1000, 300, 300, 300, 50, 50)
     levelHelper = new LevelHelper(context, [player])
     window.requestAnimationFrame(update)
