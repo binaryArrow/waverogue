@@ -1,8 +1,10 @@
 import {GameObject} from "./GameObject";
 import {Character} from "./Character";
+import {StaticMapObject} from "./levelmodels/StaticMapObject";
 
 export class Player extends GameObject implements Character {
 
+    staticMapObjects: StaticMapObject[]
     constructor(
         context: CanvasRenderingContext2D,
         x: number,
@@ -10,9 +12,11 @@ export class Player extends GameObject implements Character {
         movementSpeed: number,
         jumpSpeed: number,
         width: number,
-        height: number
+        height: number,
+        staticMapObjects: StaticMapObject[]
     ) {
         super(context, x, y, movementSpeed, jumpSpeed, width, height)
+        this.staticMapObjects = staticMapObjects
         this.initMovement()
     }
 

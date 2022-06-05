@@ -1,27 +1,13 @@
-import {Level1} from "../levels/Level1";
-import {GameObject} from "../models/GameObject";
-import {Top} from "../models/levelmodels/Top";
-import {Wall} from "../models/levelmodels/Wall";
-import {Bottom} from "../models/levelmodels/Bottom";
+import {Level} from "../models/levels/Level";
+import {Level1} from "../models/levels/Level1";
+import {StaticMapObject} from "../models/levelmodels/StaticMapObject";
 
 export class LevelHelper {
-    level1: Level1
+    levels: Level[]
 
-    constructor(context: CanvasRenderingContext2D, gameObjects: GameObject[]) {
-        this.level1 = new Level1(context, gameObjects, [
-            new Top(0, 750, 1800, 10, context),
-            new Top(100, 700, 600, 10, context),
-            new Top(900, 700, 300, 10, context),
-            new Wall(800, 730, 10, 150, context),
-            new Wall(800, 490, 10, 150, context),
-            new Wall(1400, 650, 10, 300, context),
-            new Bottom(800, 640, 10, 1, context)
-        ])
+    constructor(context: CanvasRenderingContext2D) {
+        this.levels = [new Level1([
+            new StaticMapObject(0, 750, 1800, 10, context),
+        ])]
     }
-
-    update(secondsPassed: number){
-        this.level1.update(secondsPassed)
-        this.level1.gameObjects.forEach(gameObject => gameObject.update(secondsPassed))
-    }
-
 }
