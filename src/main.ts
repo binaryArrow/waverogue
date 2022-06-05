@@ -13,7 +13,6 @@ let context: CanvasRenderingContext2D
 let player: Player
 let enemy: Enemy
 let levelHelper: LevelHelper
-let focusOnWindow: boolean = true
 window.onload = init
 
 
