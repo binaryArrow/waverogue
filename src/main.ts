@@ -31,7 +31,7 @@ function update(timeStamp: number) {
     secondsPassed = (timeStamp - oldTimeStamp) / 1000
     oldTimeStamp = timeStamp
     secondsPassed = Math.min(secondsPassed, 0.1)
-    DrawHelper.detectCollisions([player, enemy])
+    // DrawHelper.detectCollisions([player, enemy])
     context.clearRect(0, 0, canvas.width, canvas.height)
     levelHelper.update(secondsPassed)
     drawFps()

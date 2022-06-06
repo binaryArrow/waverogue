@@ -73,21 +73,21 @@ export class Collusion {
             // check if rect the right or left side and return the side where rect hits wall
             if(mapElement.width <= 5) {
                 if (object.posX + object.width <= mapElement.x + mapElement.width*2) {
-                    console.log("left collusion")
+                    // console.log("left collusion")
                     return WallCollusionpoints.LEFT
                 }
                 if (object.posX >= mapElement.x - mapElement.width) {
-                    console.log("right collusion")
+                    // console.log("right collusion")
                     return WallCollusionpoints.RIGHT
                 }
             }
             else {
                 if (object.posX + object.width <= mapElement.x + mapElement.width) {
-                    console.log("left collusion")
+                    // console.log("left collusion")
                     return WallCollusionpoints.LEFT
                 }
                 if (object.posX >= mapElement.x - mapElement.width) {
-                    console.log("right collusion")
+                    // console.log("right collusion")
                     return WallCollusionpoints.RIGHT
                 }
             }
