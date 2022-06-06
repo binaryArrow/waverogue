@@ -1,5 +1,6 @@
 import {GameObject} from "./GameObject";
 import {Character, FaceDirection} from "./Character";
+import {easeInOutQuint} from "../helpers/EasingFunctions";
 
 export class Player extends GameObject implements Character {
     rollIndicator: boolean = false
@@ -98,7 +99,7 @@ export class Player extends GameObject implements Character {
         this.timePassed += secondsPassed
 
         if (this.faceDirection === FaceDirection.RIGHT) {
-            this.posX = this.easeInOutQuint(this.timePassed, this.posX, this.dashRange, 0.2)
+            this.posX = easeInOutQuint(this.timePassed, this.posX, this.dashRange, 0.2)
             if (this.posX >= this.rollPosition) {
                 this.timePassed = 0
                 this.rollIndicator = false
@@ -106,7 +107,7 @@ export class Player extends GameObject implements Character {
             }
         }
         if (this.faceDirection === FaceDirection.LEFT) {
-            this.posX = this.easeInOutQuint(this.timePassed, this.posX, -this.dashRange, 0.2)
+            this.posX = easeInOutQuint(this.timePassed, this.posX, -this.dashRange, 0.2)
             if (this.posX <= this.rollPosition) {
                 this.timePassed = 0
                 this.rollIndicator = false
@@ -115,11 +116,6 @@ export class Player extends GameObject implements Character {
         }
     }
 
-    easeInOutQuint(t: number, b: number, c: number, d: number): number {
-        if ((t /= d / 2) < 1)
-            return c / 2 * t * t * t * t * t + b;
-        return c / 2 * ((t -= 2) * t * t * t * t + 2) + b;
-    }
 
     jump(): void {
         this.velocityY = -this.jumpSpeed
