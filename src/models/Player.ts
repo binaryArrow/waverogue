@@ -4,6 +4,9 @@ import {Character, FaceDirection} from "./Character";
 export class Player extends GameObject implements Character {
     rollIndicator: boolean = false
     faceDirection: FaceDirection = FaceDirection.RIGHT
+    rollPosition: number
+    timePassed: number = 0
+    dashRange: number = 25
 
     constructor(
         context: CanvasRenderingContext2D,
@@ -15,6 +18,7 @@ export class Player extends GameObject implements Character {
         height: number
     ) {
         super(context, x, y, movementSpeed, jumpSpeed, width, height)
+        this.rollPosition = this.posX
         this.initMovement()
     }
 
@@ -25,7 +29,7 @@ export class Player extends GameObject implements Character {
         this.applyVelocity(secondsPassed)
     }
 
-    updateMovement(secondsPast: number) {
+    updateMovement(secondsPassed: number) {
         if (this.moveLeftIndicator)
             this.moveLeft()
         else if (this.moveRightIndicator)
@@ -33,16 +37,18 @@ export class Player extends GameObject implements Character {
         else if (!(this.moveRightIndicator && this.moveLeftIndicator))
             this.stopMovingXAxis()
         // jumping
-        if (this.jumpIndicator) {
+        if (this.jumpIndicator)
             this.jump()
-        }
+        // rolling
         if (this.rollIndicator) {
-            this.roll(this.faceDirection)
+            this.setRollPosition()
+            this.applyRoll(secondsPassed)
         }
     }
 
     applyVelocity(secondsPassed: number) {
-        this.posX += this.velocityX * secondsPassed
+        if (!this.rollIndicator)
+            this.posX += this.velocityX * secondsPassed
         this.fall(secondsPassed)
     }
 
@@ -52,7 +58,7 @@ export class Player extends GameObject implements Character {
             if (ev.key === 'w' && !this.inAir) {
                 this.jumpIndicator = true
             }
-            if (ev.key === ' ') {
+            if (ev.key === ' ' && !this.inAir) {
                 this.rollIndicator = true
             }
         })
@@ -80,12 +86,39 @@ export class Player extends GameObject implements Character {
         })
     }
 
-    roll(faceDirection: FaceDirection): void {
-        if (faceDirection === FaceDirection.RIGHT)
-            this.velocityX += 500
-        if (faceDirection === FaceDirection.LEFT)
-            this.velocityX -= 500
-        this.rollIndicator = false
+    // sets rollrange
+    setRollPosition(): void {
+        if (this.faceDirection == FaceDirection.RIGHT)
+            this.rollPosition = this.posX + this.dashRange
+        if (this.faceDirection == FaceDirection.LEFT)
+            this.rollPosition = this.posX - this.dashRange
+    }
+
+    applyRoll(secondsPassed: number) {
+        this.timePassed += secondsPassed
+
+        if (this.faceDirection === FaceDirection.RIGHT) {
+            this.posX = this.easeInOutQuint(this.timePassed, this.posX, this.dashRange, 0.2)
+            if (this.posX >= this.rollPosition) {
+                this.timePassed = 0
+                this.rollIndicator = false
+                this.posX = this.rollPosition
+            }
+        }
+        if (this.faceDirection === FaceDirection.LEFT) {
+            this.posX = this.easeInOutQuint(this.timePassed, this.posX, -this.dashRange, 0.2)
+            if (this.posX <= this.rollPosition) {
+                this.timePassed = 0
+                this.rollIndicator = false
+                this.posX = this.rollPosition
+            }
+        }
+    }
+
+    easeInOutQuint(t: number, b: number, c: number, d: number): number {
+        if ((t /= d / 2) < 1)
+            return c / 2 * t * t * t * t * t + b;
+        return c / 2 * ((t -= 2) * t * t * t * t + 2) + b;
     }
 
     jump(): void {

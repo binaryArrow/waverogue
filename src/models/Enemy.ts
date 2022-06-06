@@ -25,7 +25,7 @@ export class Enemy extends GameObject implements Character {
     updateMovement(secondsPast: number): void {
     }
 
-    roll(secondsPast: number): void {
+    setRollPosition(secondsPast: number): void {
     }
 
     jump(): void {
