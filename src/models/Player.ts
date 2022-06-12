@@ -1,13 +1,15 @@
 import {GameObject} from "./GameObject";
 import {Character, FaceDirection} from "./Character";
 import {easeInOutQuint} from "../helpers/EasingFunctions";
+import {Constants} from "./Constants";
 
 export class Player extends GameObject implements Character {
     rollIndicator: boolean = false
     faceDirection: FaceDirection = FaceDirection.RIGHT
-    rollPosition: number
     timePassed: number = 0
     dashRange: number = 25
+    rollCooldown: number = 0
+    rollPosition: number
 
     constructor(
         context: CanvasRenderingContext2D,
@@ -48,8 +50,11 @@ export class Player extends GameObject implements Character {
     }
 
     applyVelocity(secondsPassed: number) {
-        if (!this.rollIndicator)
+        if (!this.rollIndicator) {
             this.posX += this.velocityX * secondsPassed
+            if (this.rollCooldown > 0)
+                this.rollCooldown -= secondsPassed
+        }
         this.fall(secondsPassed)
     }
 
@@ -59,7 +64,7 @@ export class Player extends GameObject implements Character {
             if (ev.key === 'w' && !this.inAir) {
                 this.jumpIndicator = true
             }
-            if (ev.key === ' ' && !this.inAir) {
+            if (ev.key === ' ' && !this.inAir && this.rollCooldown <= 0) {
                 this.rollIndicator = true
             }
         })
@@ -104,6 +109,7 @@ export class Player extends GameObject implements Character {
                 this.timePassed = 0
                 this.rollIndicator = false
                 this.posX = this.rollPosition
+                this.rollCooldown = Constants.playerRollCooldown
             }
         }
         if (this.faceDirection === FaceDirection.LEFT) {
@@ -112,6 +118,7 @@ export class Player extends GameObject implements Character {
                 this.timePassed = 0
                 this.rollIndicator = false
                 this.posX = this.rollPosition
+                this.rollCooldown = Constants.playerRollCooldown
             }
         }
     }
