@@ -4,11 +4,14 @@ import {easeInOutQuint} from "../helpers/EasingFunctions";
 import {Constants} from "./Constants";
 
 export class Player extends GameObject implements Character {
-    rollIndicator: boolean = false
     faceDirection: FaceDirection = FaceDirection.RIGHT
-    timePassed: number = 0
+    rollIndicator: boolean = false
+    attackIndicator: boolean = false
     dashRange: number = 25
+    timePassedRoll: number = 0
+    timePassedAttack: number = 0
     rollCooldown: number = 0
+    attackCooldown: number = 0
     rollPosition: number
 
     constructor(
@@ -47,10 +50,17 @@ export class Player extends GameObject implements Character {
             this.setRollPosition()
             this.applyRoll(secondsPassed)
         }
+        if(this.attackIndicator){
+            this.applyAttack(secondsPassed)
+        }
     }
 
     applyVelocity(secondsPassed: number) {
-        if (!this.rollIndicator) {
+        if (!this.rollIndicator && !this.attackIndicator) {
+            if(this.velocityX<0)
+                this.faceDirection = FaceDirection.LEFT
+            else if(this.velocityX > 0)
+                this.faceDirection = FaceDirection.RIGHT
             this.posX += this.velocityX * secondsPassed
             if (this.rollCooldown > 0)
                 this.rollCooldown -= secondsPassed
@@ -60,11 +70,16 @@ export class Player extends GameObject implements Character {
 
 
     initMovement() {
+        window.addEventListener('click', ev => {
+            if(!this.rollIndicator && this.attackCooldown <= 0 && !this.inAir){
+                this.attackIndicator = true
+            }
+        })
         window.addEventListener('keypress', ev => {
             if (ev.key === 'w' && !this.inAir) {
                 this.jumpIndicator = true
             }
-            if (ev.key === ' ' && !this.inAir && this.rollCooldown <= 0) {
+            if (ev.key === ' ' && !this.inAir && this.rollCooldown <= 0 && !this.attackIndicator) {
                 this.rollIndicator = true
             }
         })
@@ -72,11 +87,9 @@ export class Player extends GameObject implements Character {
             switch (e.key) {
                 case 'a':
                     this.moveLeftIndicator = true
-                    this.faceDirection = FaceDirection.LEFT
                     break;
                 case 'd':
                     this.moveRightIndicator = true
-                    this.faceDirection = FaceDirection.RIGHT
                     break;
             }
         })
@@ -101,21 +114,21 @@ export class Player extends GameObject implements Character {
     }
 
     applyRoll(secondsPassed: number) {
-        this.timePassed += secondsPassed
+        this.timePassedRoll += secondsPassed
 
         if (this.faceDirection === FaceDirection.RIGHT) {
-            this.posX = easeInOutQuint(this.timePassed, this.posX, this.dashRange, 0.2)
+            this.posX = easeInOutQuint(this.timePassedRoll, this.posX, this.dashRange, 0.2)
             if (this.posX >= this.rollPosition) {
-                this.timePassed = 0
+                this.timePassedRoll = 0
                 this.rollIndicator = false
                 this.posX = this.rollPosition
                 this.rollCooldown = Constants.playerRollCooldown
             }
         }
         if (this.faceDirection === FaceDirection.LEFT) {
-            this.posX = easeInOutQuint(this.timePassed, this.posX, -this.dashRange, 0.2)
+            this.posX = easeInOutQuint(this.timePassedRoll, this.posX, -this.dashRange, 0.2)
             if (this.posX <= this.rollPosition) {
-                this.timePassed = 0
+                this.timePassedRoll = 0
                 this.rollIndicator = false
                 this.posX = this.rollPosition
                 this.rollCooldown = Constants.playerRollCooldown
@@ -123,6 +136,25 @@ export class Player extends GameObject implements Character {
         }
     }
 
+    applyAttack(secondsPassed: number){
+        this.timePassedAttack += secondsPassed
+        if(this.faceDirection === FaceDirection.RIGHT){
+            this.context.strokeStyle = '#000000'
+            this.context.fillRect(this.posX + this.width, this.posY, this.width * 2, this.height)
+            if(this.timePassedAttack >= Constants.playerAttackSpeed){
+                this.attackIndicator = false
+                this.timePassedAttack = 0
+            }
+        }
+        if(this.faceDirection === FaceDirection.LEFT){
+            this.context.strokeStyle = '#000000'
+            this.context.fillRect(this.posX - this.width*2, this.posY, this.width * 2, this.height)
+            if(this.timePassedAttack >= Constants.playerAttackSpeed){
+                this.attackIndicator = false
+                this.timePassedAttack = 0
+            }
+        }
+    }
 
     jump(): void {
         this.velocityY = -this.jumpSpeed
