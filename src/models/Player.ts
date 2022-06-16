@@ -8,13 +8,13 @@ export class Player extends GameObject implements Character {
     rollIndicator: boolean = false
     attackIndicator: boolean = false
     crouchIndicator: boolean = false
+    isCrouching: boolean = false
     dashRange: number = 25
     timePassedRoll: number = 0
     timePassedAttack: number = 0
     rollCooldown: number = 0
     attackCooldown: number = 0
     rollPosition: number
-    crouch: boolean = false
 
     constructor(
         context: CanvasRenderingContext2D,
@@ -182,19 +182,19 @@ export class Player extends GameObject implements Character {
         if (!this.inAir) {
             this.height = Constants.playerHeightCrouch
             this.movementSpeed = 200
-            if (!this.crouch) {
+            if (!this.isCrouching) {
                 this.posY += Constants.playerHeightCrouch
-                this.crouch = true
+                this.isCrouching = true
             }
         }
     }
 
     resetCrouch(): void {
-        if (!this.inAir && this.crouch) {
+        if (!this.inAir && this.isCrouching) {
             this.movementSpeed = 300
             this.height = Constants.playerHeight
             this.posY -= Constants.playerHeightCrouch
-            this.crouch = false
+            this.isCrouching = false
         }
     }
 
