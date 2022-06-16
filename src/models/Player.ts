@@ -7,12 +7,14 @@ export class Player extends GameObject implements Character {
     faceDirection: FaceDirection = FaceDirection.RIGHT
     rollIndicator: boolean = false
     attackIndicator: boolean = false
+    crouchIndicator: boolean = false
     dashRange: number = 25
     timePassedRoll: number = 0
     timePassedAttack: number = 0
     rollCooldown: number = 0
     attackCooldown: number = 0
     rollPosition: number
+    crouch: boolean = false
 
     constructor(
         context: CanvasRenderingContext2D,
@@ -50,16 +52,21 @@ export class Player extends GameObject implements Character {
             this.setRollPosition()
             this.applyRoll(secondsPassed)
         }
-        if(this.attackIndicator){
+        // attackin
+        if (this.attackIndicator) {
             this.applyAttack(secondsPassed)
+        }
+        // crouch
+        if (this.crouchIndicator) {
+            this.applyCrouch()
         }
     }
 
     applyVelocity(secondsPassed: number) {
         if (!this.rollIndicator && !this.attackIndicator) {
-            if(this.velocityX<0)
+            if (this.velocityX < 0)
                 this.faceDirection = FaceDirection.LEFT
-            else if(this.velocityX > 0)
+            else if (this.velocityX > 0)
                 this.faceDirection = FaceDirection.RIGHT
             this.posX += this.velocityX * secondsPassed
             if (this.rollCooldown > 0)
@@ -71,7 +78,7 @@ export class Player extends GameObject implements Character {
 
     initMovement() {
         window.addEventListener('click', ev => {
-            if(!this.rollIndicator && this.attackCooldown <= 0 && !this.inAir){
+            if (!this.rollIndicator && this.attackCooldown <= 0 && !this.inAir) {
                 this.attackIndicator = true
             }
         })
@@ -91,6 +98,9 @@ export class Player extends GameObject implements Character {
                 case 'd':
                     this.moveRightIndicator = true
                     break;
+                case 's':
+                    this.crouchIndicator = true
+                    break;
             }
         })
         window.addEventListener('keyup', (e) => {
@@ -100,6 +110,10 @@ export class Player extends GameObject implements Character {
                     break;
                 case 'd':
                     this.moveRightIndicator = false
+                    break;
+                case 's':
+                    this.crouchIndicator = false
+                    this.resetCrouch()
                     break;
             }
         })
@@ -136,20 +150,20 @@ export class Player extends GameObject implements Character {
         }
     }
 
-    applyAttack(secondsPassed: number){
+    applyAttack(secondsPassed: number) {
         this.timePassedAttack += secondsPassed
-        if(this.faceDirection === FaceDirection.RIGHT){
+        if (this.faceDirection === FaceDirection.RIGHT) {
             this.context.strokeStyle = '#000000'
             this.context.fillRect(this.posX + this.width, this.posY, this.width * 2, this.height)
-            if(this.timePassedAttack >= Constants.playerAttackSpeed){
+            if (this.timePassedAttack >= Constants.playerAttackSpeed) {
                 this.attackIndicator = false
                 this.timePassedAttack = 0
             }
         }
-        if(this.faceDirection === FaceDirection.LEFT){
+        if (this.faceDirection === FaceDirection.LEFT) {
             this.context.strokeStyle = '#000000'
-            this.context.fillRect(this.posX - this.width*2, this.posY, this.width * 2, this.height)
-            if(this.timePassedAttack >= Constants.playerAttackSpeed){
+            this.context.fillRect(this.posX - this.width * 2, this.posY, this.width * 2, this.height)
+            if (this.timePassedAttack >= Constants.playerAttackSpeed) {
                 this.attackIndicator = false
                 this.timePassedAttack = 0
             }
@@ -160,6 +174,26 @@ export class Player extends GameObject implements Character {
         this.velocityY = -this.jumpSpeed
         this.jumpIndicator = false
         this.inAir = true
+    }
+
+    applyCrouch(): void {
+        if (!this.inAir) {
+            this.height = Constants.playerHeightCrouch
+            this.movementSpeed = 200
+            if (!this.crouch) {
+                this.posY += Constants.playerHeightCrouch
+                this.crouch = true
+            }
+        }
+    }
+
+    resetCrouch(): void {
+        if (!this.inAir) {
+            this.movementSpeed = 300
+            this.height = Constants.playerHeight
+            this.posY -= Constants.playerHeightCrouch
+            this.crouch = false
+        }
     }
 
 

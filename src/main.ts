@@ -2,6 +2,7 @@ import {Player} from "./models/Player";
 import {Enemy} from "./models/Enemy";
 import {DrawHelper} from "./helpers/DrawHelper";
 import {LevelHelper} from "./helpers/LevelHelper";
+import {Constants} from "./models/Constants";
 
 const WIDTH: number = 1800
 const HEIGHT: number = 800
@@ -21,7 +22,7 @@ function init() {
     context = canvas.getContext('2d') as CanvasRenderingContext2D
     canvas.width = WIDTH
     canvas.height = HEIGHT
-    player = new Player(context, 0, 550, 300, 300, 20, 50)
+    player = new Player(context, 0, 550, 300, 300, 20, Constants.playerHeight)
     enemy = new Enemy(context, 1000, 300, 300, 300, 50, 50)
     levelHelper = new LevelHelper(context, [player])
     window.requestAnimationFrame(update)
