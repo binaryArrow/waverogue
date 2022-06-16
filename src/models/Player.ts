@@ -83,7 +83,7 @@ export class Player extends GameObject implements Character {
             }
         })
         window.addEventListener('keypress', ev => {
-            if (ev.key === 'w' && !this.inAir) {
+            if (ev.key === 'w' && !this.inAir && !this.isCrouching) {
                 this.jumpIndicator = true
             }
             if (ev.key === ' ' && !this.inAir && this.rollCooldown <= 0 && !this.attackIndicator) {
