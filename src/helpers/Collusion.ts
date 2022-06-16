@@ -24,7 +24,10 @@ export class Collusion {
                         gameObject.posY = mapElement.y - gameObject.height
                         gameObject.velocityY = gameObject.fallSpeed
                         gameObject.inAir = false
-                    } else mapElement.collides = false
+                    } else if (mapElement.collides) {
+                        gameObject.inAir = true
+                        mapElement.collides = false
+                    }
                 })
             }
         })
@@ -71,8 +74,8 @@ export class Collusion {
             mapElement.y > object.height + object.posY)) {
             // console.log(object.posX + object.width + " " + object.posX + "\n" + mapElement.x + " " + mapElement.x + mapElement.width)
             // check if rect the right or left side and return the side where rect hits wall
-            if(mapElement.width <= 5) {
-                if (object.posX + object.width <= mapElement.x + mapElement.width*2) {
+            if (mapElement.width <= 5) {
+                if (object.posX + object.width <= mapElement.x + mapElement.width * 2) {
                     // console.log("left collusion")
                     return WallCollusionpoints.LEFT
                 }
@@ -80,8 +83,7 @@ export class Collusion {
                     // console.log("right collusion")
                     return WallCollusionpoints.RIGHT
                 }
-            }
-            else {
+            } else {
                 if (object.posX + object.width <= mapElement.x + mapElement.width) {
                     // console.log("left collusion")
                     return WallCollusionpoints.LEFT
