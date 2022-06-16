@@ -181,7 +181,7 @@ export class Player extends GameObject implements Character {
     applyCrouch(): void {
         if (!this.inAir) {
             this.height = Constants.playerHeightCrouch
-            this.movementSpeed = 200
+            this.movementSpeed = Constants.playerMoveSpeedCrouch
             if (!this.isCrouching) {
                 this.posY += Constants.playerHeightCrouch
                 this.isCrouching = true
@@ -191,7 +191,7 @@ export class Player extends GameObject implements Character {
 
     resetCrouch(): void {
         if (!this.inAir && this.isCrouching) {
-            this.movementSpeed = 300
+            this.movementSpeed = Constants.playerMoveSpeed
             this.height = Constants.playerHeight
             this.posY -= Constants.playerHeightCrouch
             this.isCrouching = false
