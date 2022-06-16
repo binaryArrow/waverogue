@@ -88,6 +88,8 @@ export class Player extends GameObject implements Character {
             }
             if (ev.key === ' ' && !this.inAir && this.rollCooldown <= 0 && !this.attackIndicator) {
                 this.rollIndicator = true
+                this.crouchIndicator = false
+                this.resetCrouch()
             }
         })
         window.addEventListener('keydown', (e) => {
@@ -188,7 +190,7 @@ export class Player extends GameObject implements Character {
     }
 
     resetCrouch(): void {
-        if (!this.inAir) {
+        if (!this.inAir && this.crouch) {
             this.movementSpeed = 300
             this.height = Constants.playerHeight
             this.posY -= Constants.playerHeightCrouch
