@@ -1,7 +1,10 @@
 import {GameObject} from "./GameObject";
-import {Character} from "./Character";
+import {Character, FaceDirection} from "./Character";
 
 export class Enemy extends GameObject implements Character {
+
+    faceDirection: FaceDirection = FaceDirection.RIGHT
+    health: number = 100
 
     update(secondsPassed: number) {
         this.draw()
@@ -30,4 +33,5 @@ export class Enemy extends GameObject implements Character {
 
     jump(): void {
     }
+
 }

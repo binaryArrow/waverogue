@@ -22,9 +22,25 @@ function init() {
     context = canvas.getContext('2d') as CanvasRenderingContext2D
     canvas.width = WIDTH
     canvas.height = HEIGHT
-    player = new Player(context, 0, 550, Constants.playerMoveSpeed, 300, 20, Constants.playerHeight)
-    enemy = new Enemy(context, 1000, 300, 300, 300, 50, 50)
-    levelHelper = new LevelHelper(context, [player])
+    player = new Player(
+        context,
+        0,
+        550,
+        Constants.playerMoveSpeed,
+        Constants.playerJumpSpeed,
+        Constants.playerWidth,
+        Constants.playerHeight
+    )
+    enemy = new Enemy(
+        context,
+        1000,
+        300,
+        300,
+        300,
+        50,
+        50
+    )
+    levelHelper = new LevelHelper(context, [enemy, player], player, [enemy])
     window.requestAnimationFrame(update)
 }
 
@@ -32,7 +48,6 @@ function update(timeStamp: number) {
     secondsPassed = (timeStamp - oldTimeStamp) / 1000
     oldTimeStamp = timeStamp
     secondsPassed = Math.min(secondsPassed, 0.1)
-    // DrawHelper.detectCollisions([player, enemy])
     context.clearRect(0, 0, canvas.width, canvas.height)
     levelHelper.update(secondsPassed)
     // drawFps()

@@ -1,7 +1,9 @@
 import {GameObject} from "../models/GameObject";
+import {Player} from "../models/Player";
+import {RectHitbox} from "../models/RectHitbox";
 
 export class DrawHelper {
-    static detectCollisions(gameObjects: GameObject[]) {
+    static detectCharacterCollusions(gameObjects: GameObject[]) {
         let obj1;
         let obj2;
 
@@ -24,9 +26,26 @@ export class DrawHelper {
         }
     }
 
+    static playerAttackCollusion(player: Player, gameObjects: GameObject[]){
+        let obj1;
+        if(player.attackIndicator){
+            console.log("ATTACKED")
+            for (let i = 0; i < gameObjects.length; i++) {
+                if(this.rectHitboxIntersect(gameObjects[i], player.attackHitbox))
+                    gameObjects[i].collides = true
+            }
+        }
+    }
+
 
     // returns true if given two objects intersect on rectangular hitbox
     private static rectangularHitBoxIntersect(object1: GameObject, object2: GameObject): boolean {
+        return !(object1.posX > object2.width + object2.posX ||
+            object2.posX > object1.width + object1.posX ||
+            object1.posY > object2.height + object2.posY ||
+            object2.posY > object1.height + object1.posY)
+    }
+    private static rectHitboxIntersect(object1: GameObject, object2: RectHitbox): boolean {
         return !(object1.posX > object2.width + object2.posX ||
             object2.posX > object1.width + object1.posX ||
             object1.posY > object2.height + object2.posY ||
