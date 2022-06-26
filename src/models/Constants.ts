@@ -5,4 +5,6 @@ export class Constants{
     static playerHeightCrouch: number = 25
     static playerMoveSpeed: number = 300
     static playerMoveSpeedCrouch: number = 150
+    static playerWidth: number = 20
+    static playerJumpSpeed: number = 300
 }

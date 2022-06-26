@@ -2,6 +2,8 @@ import {GameObject} from "./GameObject";
 import {Character, FaceDirection} from "./Character";
 import {easeInOutQuint} from "../helpers/EasingFunctions";
 import {Constants} from "./Constants";
+import {Rect} from "./Rect";
+import {RectHitbox} from "./RectHitbox";
 
 export class Player extends GameObject implements Character {
     faceDirection: FaceDirection = FaceDirection.RIGHT
@@ -14,7 +16,9 @@ export class Player extends GameObject implements Character {
     timePassedAttack: number = 0
     rollCooldown: number = 0
     attackCooldown: number = 0
+    health: number = 100
     rollPosition: number
+    attackHitbox: RectHitbox = new RectHitbox(this.posX, this.posY, this.width*2, this.height)
 
     constructor(
         context: CanvasRenderingContext2D,
@@ -156,7 +160,14 @@ export class Player extends GameObject implements Character {
         this.timePassedAttack += secondsPassed
         if (this.faceDirection === FaceDirection.RIGHT) {
             this.context.strokeStyle = '#000000'
-            this.context.fillRect(this.posX + this.width, this.posY, this.width * 2, this.height)
+            this.attackHitbox = {
+                posX: this.posX + this.width,
+                posY: this.posY,
+                width: this.width * 2,
+                height: this.height
+            }
+            this.context.fillRect(this.attackHitbox.posX, this.attackHitbox.posY, this.attackHitbox.width, this.attackHitbox.height)
+            // cooldown to attack again
             if (this.timePassedAttack >= Constants.playerAttackSpeed) {
                 this.attackIndicator = false
                 this.timePassedAttack = 0
