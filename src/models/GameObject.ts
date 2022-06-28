@@ -15,7 +15,7 @@ export class GameObject {
     moveLeftIndicator: boolean = false
     moveRightIndicator: boolean = false
     jumpIndicator: boolean = false
-
+    hit: boolean = false
     constructor(
         context: CanvasRenderingContext2D,
         x: number,

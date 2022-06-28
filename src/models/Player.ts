@@ -2,7 +2,6 @@ import {GameObject} from "./GameObject";
 import {Character, FaceDirection} from "./Character";
 import {easeInOutQuint} from "../helpers/EasingFunctions";
 import {Constants} from "./Constants";
-import {Rect} from "./Rect";
 import {RectHitbox} from "./RectHitbox";
 
 export class Player extends GameObject implements Character {
@@ -17,8 +16,9 @@ export class Player extends GameObject implements Character {
     rollCooldown: number = 0
     attackCooldown: number = 0
     health: number = 100
-    rollPosition: number
     attackHitbox: RectHitbox = new RectHitbox(this.posX, this.posY, this.width*2, this.height)
+    attackDamage: number = 1
+    rollPosition: number
 
     constructor(
         context: CanvasRenderingContext2D,
@@ -175,7 +175,13 @@ export class Player extends GameObject implements Character {
         }
         if (this.faceDirection === FaceDirection.LEFT) {
             this.context.strokeStyle = '#000000'
-            this.context.fillRect(this.posX - this.width * 2, this.posY, this.width * 2, this.height)
+            this.attackHitbox = {
+                posX: this.posX - this.width * 2,
+                posY: this.posY,
+                width: this.width * 2,
+                height: this.height
+            }
+            this.context.fillRect(this.attackHitbox.posX, this.attackHitbox.posY, this.attackHitbox.width, this.attackHitbox.height)
             if (this.timePassedAttack >= Constants.playerAttackSpeed) {
                 this.attackIndicator = false
                 this.timePassedAttack = 0
@@ -207,6 +213,13 @@ export class Player extends GameObject implements Character {
             this.posY -= Constants.playerHeightCrouch
             this.isCrouching = false
         }
+    }
+
+    resetAttackHitbox(){
+        this.attackHitbox.posX = 0
+        this.attackHitbox.posY = 0
+        this.attackHitbox.height = 0
+        this.attackHitbox.width = 0
     }
 
 
