@@ -1,6 +1,7 @@
 export interface Character {
     faceDirection: FaceDirection
     health: number
+    attackDamage: number
     fall(secondsPassed: number): void // fall
     setRollPosition(secondsPassed: number): void // roll
     applyVelocity(secondsPassed: number): void // apply overall velocity (x, and y axis)
