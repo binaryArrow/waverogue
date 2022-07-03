@@ -3,7 +3,7 @@ import {Player} from "../models/Player";
 import {RectHitbox} from "../models/RectHitbox";
 import {Enemy} from "../models/Enemy";
 
-export class DrawHelper {
+export class LogicHelper {
     static detectCharacterCollusions(gameObjects: GameObject[]) {
         let obj1;
         let obj2;
@@ -30,32 +30,30 @@ export class DrawHelper {
     static playerAttackCollusion(player: Player, gameObjects: GameObject[]) {
         for (const element of gameObjects) {
             if (element instanceof Enemy)
-                if (player.attackIndicator && this.rectHitboxIntersect(element, player.attackHitbox)) {
+                if (player.attackIndicator && this.rectangularHitBoxIntersect(element, player.attackHitbox)) {
+                    if (player.activateDamage)
+                        element.health -= player.attackDamage
+                    player.activateDamage = false
                     element.hit = true
-                    element.health -= player.attackDamage
-
                 } else {
-                    element.hit = false
                     player.resetAttackHitbox()
+                    element.hit = false
                 }
-            if (element instanceof Enemy)
-                console.log(element.health)
+            // if (element instanceof Enemy)
+            //     console.log(element.health)
         }
     }
 
 
     // returns true if given two objects intersect on rectangular hitbox
-    private static rectangularHitBoxIntersect(object1: GameObject, object2: GameObject): boolean {
+    static rectangularHitBoxIntersect(object1: GameObject, object2: GameObject | RectHitbox): boolean {
         return !(object1.posX > object2.width + object2.posX ||
             object2.posX > object1.width + object1.posX ||
             object1.posY > object2.height + object2.posY ||
             object2.posY > object1.height + object1.posY)
     }
 
-    private static rectHitboxIntersect(object1: GameObject, object2: RectHitbox): boolean {
-        return !(object1.posX > object2.width + object2.posX ||
-            object2.posX > object1.width + object1.posX ||
-            object1.posY > object2.height + object2.posY ||
-            object2.posY > object1.height + object1.posY)
+    static deleteDeadEnemies(elements: Enemy[]) {
+        elements = elements.filter(element => element.health >= 0)
     }
 }

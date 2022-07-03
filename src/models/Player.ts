@@ -14,10 +14,10 @@ export class Player extends GameObject implements Character {
     timePassedRoll: number = 0
     timePassedAttack: number = 0
     rollCooldown: number = 0
-    attackCooldown: number = 0
     health: number = 100
     attackHitbox: RectHitbox = new RectHitbox(this.posX, this.posY, this.width*2, this.height)
-    attackDamage: number = 1
+    attackDamage: number = 10
+    activateDamage: boolean = false
     rollPosition: number
 
     constructor(
@@ -82,8 +82,9 @@ export class Player extends GameObject implements Character {
 
     initMovement() {
         window.addEventListener('click', ev => {
-            if (!this.rollIndicator && this.attackCooldown <= 0 && !this.inAir) {
+            if (!this.rollIndicator && this.timePassedAttack <= 0 && !this.inAir) {
                 this.attackIndicator = true
+                this.activateDamage = true
             }
         })
         window.addEventListener('keypress', ev => {

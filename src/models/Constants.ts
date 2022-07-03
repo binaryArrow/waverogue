@@ -1,6 +1,6 @@
 export class Constants{
-    static playerRollCooldown: number = 1 // in seconds
-    static playerAttackSpeed: number = 0.3
+    static playerRollCooldown: number = 0.8 // in seconds
+    static playerAttackSpeed: number = 0.2
     static playerHeight: number = 50
     static playerHeightCrouch: number = 25
     static playerMoveSpeed: number = 300
