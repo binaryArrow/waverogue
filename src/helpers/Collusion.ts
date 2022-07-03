@@ -18,18 +18,14 @@ export class Collusion {
     }
 
     applyTopCollusion(): void {
-        this.gameObjects.forEach(it => console.log(it.inAir))
+        console.log(this.mapElements)
         this.mapElements.forEach(mapElement => {
             if (mapElement instanceof Top) {
                 this.gameObjects.forEach(gameObject => {
                     if (gameObject.velocityY > 0 && collusionCheckTop(gameObject, mapElement)) {
-                        mapElement.collides = true
                         gameObject.posY = mapElement.y - gameObject.height
                         gameObject.velocityY = gameObject.fallSpeed
                         gameObject.inAir = false
-                    } else if (mapElement.collides) {
-                        gameObject.inAir = true
-                        mapElement.collides = false
                     }
                 })
             }
@@ -49,12 +45,12 @@ export class Collusion {
                 this.gameObjects.forEach(gameObject => {
                     switch (this.checkLeftOrRightCollusion(gameObject, mapElement)) {
                         case WallCollusionpoints.LEFT: {
-                            mapElement.collides = true
+                            // mapElement.collides = true
                             gameObject.posX = mapElement.x - gameObject.width
                             break;
                         }
                         case WallCollusionpoints.RIGHT: {
-                            mapElement.collides = true
+                            // mapElement.collides = true
                             gameObject.posX = mapElement.x + mapElement.width
                             break;
                         }
