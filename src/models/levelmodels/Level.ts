@@ -22,11 +22,11 @@ export class Level {
     }
 
     update(secondsPassed: number) {
+        this.enemies.forEach(enemy => enemy.update(secondsPassed))
+        this.player.update(secondsPassed)
         this.collusion.applyTopCollusion()
         this.collusion.applyWallCollisions()
         this.collusion.applyBottomCollusion()
-        this.enemies.forEach(enemy => enemy.update(secondsPassed))
-        this.player.update(secondsPassed)
         // LogicHelper.detectCharacterCollusions(this.enemies.concat(this.player))
         LogicHelper.playerAttackCollusion(this.player, this.enemies)
         this.enemies = this.enemies.filter(element => element.health >= 0)
