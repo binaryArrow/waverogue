@@ -5,6 +5,8 @@ import {Wall} from "../models/levelmodels/Wall";
 import {WallCollusionpoints} from "../models/levelmodels/WallCollusionpoints";
 import {Bottom} from "../models/levelmodels/Bottom";
 import {StaticMapObject} from "../models/levelmodels/StaticMapObject";
+import {Player} from "../models/Player";
+import {Enemy} from "../models/Enemy";
 
 export class Collusion {
     gameObjects: GameObject[]
@@ -16,6 +18,7 @@ export class Collusion {
     }
 
     applyTopCollusion(): void {
+        this.gameObjects.forEach(it => console.log(it.inAir))
         this.mapElements.forEach(mapElement => {
             if (mapElement instanceof Top) {
                 this.gameObjects.forEach(gameObject => {

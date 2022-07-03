@@ -1,8 +1,8 @@
 import {Player} from "./models/Player";
 import {Enemy} from "./models/Enemy";
-import {DrawHelper} from "./helpers/DrawHelper";
 import {LevelHelper} from "./helpers/LevelHelper";
 import {Constants} from "./models/Constants";
+import {InitHelper} from "./helpers/InitHelper";
 
 const WIDTH: number = 1800
 const HEIGHT: number = 800
@@ -12,7 +12,7 @@ let fps
 let canvas: HTMLCanvasElement
 let context: CanvasRenderingContext2D
 let player: Player
-let enemy: Enemy
+let enemies: Enemy[]
 let levelHelper: LevelHelper
 window.onload = init
 
@@ -31,16 +31,8 @@ function init() {
         Constants.playerWidth,
         Constants.playerHeight
     )
-    enemy = new Enemy(
-        context,
-        1000,
-        300,
-        300,
-        300,
-        50,
-        50
-    )
-    levelHelper = new LevelHelper(context, [enemy, player], player, [enemy])
+    enemies = InitHelper.spawnEnemies(2,context)
+    levelHelper = new LevelHelper(context, player, enemies)
     window.requestAnimationFrame(update)
 }
 

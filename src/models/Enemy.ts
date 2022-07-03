@@ -20,7 +20,7 @@ export class Enemy extends GameObject implements Character {
 
     draw() {
         this.context.fillStyle = this.collides ? '#a66c6c' : '#ba81c7'
-        if(this.hit)
+        if (this.hit)
             this.context.fillStyle = '#ff0000'
         this.context.strokeStyle = '#000000'
         this.context.lineWidth = 2
