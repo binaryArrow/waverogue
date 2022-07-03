@@ -29,7 +29,7 @@ export class Level {
         this.collusion.applyBottomCollusion()
         // LogicHelper.detectCharacterCollusions(this.enemies.concat(this.player))
         LogicHelper.playerAttackCollusion(this.player, this.enemies)
-        this.enemies = this.enemies.filter(element => element.health >= 0)
+        this.enemies = LogicHelper.deleteDeadEnemies(this.enemies)
         this.draw()
     }
 

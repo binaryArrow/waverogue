@@ -81,7 +81,7 @@ export class Player extends GameObject implements Character {
 
 
     initMovement() {
-        window.addEventListener('click', ev => {
+        window.addEventListener('click', () => {
             if (!this.rollIndicator && this.timePassedAttack <= 0 && !this.inAir) {
                 this.attackIndicator = true
                 this.activateDamage = true
@@ -214,13 +214,6 @@ export class Player extends GameObject implements Character {
             this.posY -= Constants.playerHeightCrouch
             this.isCrouching = false
         }
-    }
-
-    resetAttackHitbox(){
-        this.attackHitbox.posX = 0
-        this.attackHitbox.posY = 0
-        this.attackHitbox.height = 0
-        this.attackHitbox.width = 0
     }
 
 
