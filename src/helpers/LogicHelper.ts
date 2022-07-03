@@ -36,7 +36,6 @@ export class LogicHelper {
                     player.activateDamage = false
                     element.hit = true
                 } else {
-                    player.resetAttackHitbox()
                     element.hit = false
                 }
             // if (element instanceof Enemy)
@@ -53,7 +52,7 @@ export class LogicHelper {
             object2.posY > object1.height + object1.posY)
     }
 
-    static deleteDeadEnemies(elements: Enemy[]) {
-        elements = elements.filter(element => element.health >= 0)
+    static deleteDeadEnemies(elements: Enemy[]): Enemy[] {
+        return elements.filter(element => element.health >= 0)
     }
 }
