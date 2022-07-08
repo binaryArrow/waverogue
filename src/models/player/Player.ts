@@ -1,11 +1,14 @@
-import {GameObject} from "./GameObject";
-import {Character, FaceDirection} from "./Character";
-import {easeInOutQuint} from "../helpers/EasingFunctions";
-import {Constants} from "./Constants";
-import {RectHitbox} from "./RectHitbox";
+import {GameObject} from "../GameObject";
+import {Character, FaceDirection} from "../Character";
+import {easeInOutQuint} from "../../helpers/EasingFunctions";
+import {Constants} from "../Constants";
+import {RectHitbox} from "../RectHitbox";
+import {PlayerSprites} from "./PlayerSprites";
 
 export class Player extends GameObject implements Character {
     faceDirection: FaceDirection = FaceDirection.RIGHT
+    attackHitbox: RectHitbox = new RectHitbox(this.posX, this.posY, this.width * 2, this.height)
+    sprites: PlayerSprites
     rollIndicator: boolean = false
     attackIndicator: boolean = false
     crouchIndicator: boolean = false
@@ -15,10 +18,10 @@ export class Player extends GameObject implements Character {
     timePassedAttack: number = 0
     rollCooldown: number = 0
     health: number = 100
-    attackHitbox: RectHitbox = new RectHitbox(this.posX, this.posY, this.width*2, this.height)
     attackDamage: number = 10
     activateDamage: boolean = false
     rollPosition: number
+    acc = 0
 
     constructor(
         context: CanvasRenderingContext2D,
@@ -32,6 +35,7 @@ export class Player extends GameObject implements Character {
         super(context, x, y, movementSpeed, jumpSpeed, width, height)
         this.rollPosition = this.posX
         this.initMovement()
+        this.sprites = new PlayerSprites(context)
     }
 
 
@@ -216,5 +220,12 @@ export class Player extends GameObject implements Character {
         }
     }
 
+    draw() {
+        super.draw(false);
+        if(this.acc >=5)
+            this.acc = 0
+        this.sprites.spriteSheetPlayerIdle.drawIndividualSprite(this.acc, 0, 40, 80, this.posX - this.width/2, this.posY - this.height/2)
+        this.acc++;
+    }
 
 }

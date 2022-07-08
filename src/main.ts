@@ -1,4 +1,4 @@
-import {Player} from "./models/Player";
+import {Player} from "./models/player/Player";
 import {Enemy} from "./models/Enemy";
 import {LevelHelper} from "./helpers/LevelHelper";
 import {Constants} from "./models/Constants";
@@ -52,7 +52,3 @@ function drawFps() {
     context.fillStyle = 'black';
     context.fillText("FPS: " + fps, 5, 15);
 }
-
-
-
-

@@ -2,7 +2,7 @@ import {Top} from "../models/levelmodels/Top";
 import {StaticMapObject} from "../models/levelmodels/StaticMapObject";
 import {Level1} from "../models/levels/Level1";
 import {Level} from "../models/levelmodels/Level";
-import {Player} from "../models/Player";
+import {Player} from "../models/player/Player";
 import {Enemy} from "../models/Enemy";
 
 export class LevelHelper {
