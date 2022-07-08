@@ -1,5 +1,5 @@
 import {GameObject} from "../models/GameObject";
-import {Player} from "../models/Player";
+import {Player} from "../models/player/Player";
 import {RectHitbox} from "../models/RectHitbox";
 import {Enemy} from "../models/Enemy";
 

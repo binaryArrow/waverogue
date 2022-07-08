@@ -1,7 +1,7 @@
 import {Collusion} from "../../helpers/Collusion";
 import {MapElement} from "./MapElement";
 import {LogicHelper} from "../../helpers/LogicHelper";
-import {Player} from "../Player";
+import {Player} from "../player/Player";
 import {Enemy} from "../Enemy";
 
 export class Level {

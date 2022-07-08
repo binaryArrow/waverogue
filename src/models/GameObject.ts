@@ -16,6 +16,7 @@ export class GameObject {
     moveRightIndicator: boolean = false
     jumpIndicator: boolean = false
     hit: boolean = false
+
     constructor(
         context: CanvasRenderingContext2D,
         x: number,
@@ -24,7 +25,7 @@ export class GameObject {
         jumpSpeed: number,
         width: number,
         height: number
-        ) {
+    ) {
         this.context = context
         this.posX = x
         this.posY = y
@@ -35,18 +36,22 @@ export class GameObject {
         this.fallSpeed = this.velocityY
     }
 
-    draw(){
-        this.context.fillStyle = this.collides ? '#a66c6c':'#94c781'
+    draw(visible: boolean) {
+        this.context.imageSmoothingEnabled = false
+        this.context.fillStyle = this.collides ? '#a66c6c' : '#94c781'
         this.context.strokeStyle = '#000000'
         this.context.lineWidth = 2
-        this.context.fillRect(this.posX, this.posY, this.width, this.height)
-        this.context.strokeRect(this.posX, this.posY, this.width, this.height)
+        if (visible) {
+            this.context.fillRect(this.posX, this.posY, this.width, this.height)
+            this.context.strokeRect(this.posX, this.posY, this.width, this.height)
+        }
     }
 
-    moveLeft(): void{
+    moveLeft(): void {
         this.velocityX = -this.movementSpeed
     }
-    moveRight(): void{
+
+    moveRight(): void {
         this.velocityX = this.movementSpeed
     }
 
@@ -54,12 +59,13 @@ export class GameObject {
         this.velocityX = 0
     }
 
-    fall(secondsPassed: number){
+    fall(secondsPassed: number) {
         secondsPassed = Math.min(secondsPassed, 0.012) // this piece of shit prevents falling when changing tabs
         this.velocityY += this.gravity
         this.posY += Math.floor(this.velocityY * secondsPassed)
     }
 
-    update(secondsPassed: number): void {}
+    update(secondsPassed: number): void {
+    }
 
 }
