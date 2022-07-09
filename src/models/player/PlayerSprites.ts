@@ -8,7 +8,7 @@ export class PlayerSprites{
 
     constructor(context: CanvasRenderingContext2D) {
         this.context = context
-        this.spriteSheetPlayerIdle = new SpriteSheet(24, 37, playerIdle, context)
+        this.spriteSheetPlayerIdle = new SpriteSheet(24, 37,5,  playerIdle, context)
     }
 
 }
