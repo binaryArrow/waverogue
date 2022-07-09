@@ -22,6 +22,7 @@ export class Player extends GameObject implements Character {
     activateDamage: boolean = false
     rollPosition: number
     acc = 0
+    frame = 0
 
     constructor(
         context: CanvasRenderingContext2D,
@@ -43,6 +44,7 @@ export class Player extends GameObject implements Character {
         this.draw()
         this.updateMovement(secondsPassed)
         this.applyVelocity(secondsPassed)
+
     }
 
     updateMovement(secondsPassed: number) {
@@ -221,11 +223,14 @@ export class Player extends GameObject implements Character {
     }
 
     draw() {
-        super.draw(false);
-        if(this.acc >=5)
-            this.acc = 0
+        if (this.frame % 9 == 0) {
+            this.acc++;
+            if (this.acc >= 5)
+                this.acc = 0
+        }
         this.sprites.spriteSheetPlayerIdle.drawIndividualSprite(this.acc, 0, 40, 80, this.posX - this.width/2, this.posY - this.height/2)
-        this.acc++;
+        this.frame ++
+        super.draw(false);
     }
 
 }
