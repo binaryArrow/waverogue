@@ -6,6 +6,8 @@ import playerJumpRight from "../../assets/player/player_jump_right.png"
 import playerJumpLeft from "../../assets/player/player_jump_left.png"
 import playerFallRight from "../../assets/player/player_fall_right.png"
 import playerFallLeft from "../../assets/player/player_fall_left.png"
+import playerCrouchRight from "../../assets/player/player_crouch_right.png"
+import playerCrouchLeft from "../../assets/player/player_crouch_left.png"
 import {SpriteSheet} from "../SpriteSheet";
 
 export class PlayerSprites{
@@ -19,6 +21,8 @@ export class PlayerSprites{
     spriteSheetPlayerJumpLeft: SpriteSheet
     spriteSheetPlayerFallRight: SpriteSheet
     spriteSheetPlayerFallLeft: SpriteSheet
+    spriteSheetPlayerCrouchRight: SpriteSheet
+    spriteSheetPlayerCrouchLeft: SpriteSheet
 
     constructor(context: CanvasRenderingContext2D) {
         this.context = context
@@ -30,6 +34,9 @@ export class PlayerSprites{
         this.spriteSheetPlayerJumpLeft = new SpriteSheet(24, 37,3,  playerJumpLeft, context)
         this.spriteSheetPlayerFallRight = new SpriteSheet(24, 37,3,  playerFallRight, context)
         this.spriteSheetPlayerFallLeft = new SpriteSheet(24, 37,3,  playerFallLeft, context)
+        this.spriteSheetPlayerCrouchRight = new SpriteSheet(24, 37,4,  playerCrouchRight, context)
+        this.spriteSheetPlayerCrouchLeft = new SpriteSheet(24, 37,4,  playerCrouchLeft, context)
+
     }
 
 }
