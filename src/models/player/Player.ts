@@ -9,7 +9,7 @@ export class Player extends GameObject implements Character {
     faceDirection: FaceDirection = FaceDirection.RIGHT
     attackHitbox: RectHitbox = new RectHitbox(this.posX, this.posY, this.width * 2, this.height)
     sprites: PlayerSprites
-    rollIndicator: boolean = false
+    dashIndicator: boolean = false
     attackIndicator: boolean = false
     crouchIndicator: boolean = false
     isCrouching: boolean = false
@@ -21,8 +21,6 @@ export class Player extends GameObject implements Character {
     attackDamage: number = 10
     activateDamage: boolean = false
     rollPosition: number
-    acc = 0
-    frame = 0
 
     constructor(
         context: CanvasRenderingContext2D,
@@ -41,10 +39,10 @@ export class Player extends GameObject implements Character {
 
 
     update(secondsPassed: number) {
-        this.draw()
+        this.animate()
+        this.draw(false, true)
         this.updateMovement(secondsPassed)
         this.applyVelocity(secondsPassed)
-
     }
 
     updateMovement(secondsPassed: number) {
@@ -58,7 +56,7 @@ export class Player extends GameObject implements Character {
         if (this.jumpIndicator)
             this.jump()
         // rolling
-        if (this.rollIndicator) {
+        if (this.dashIndicator) {
             this.setRollPosition()
             this.applyRoll(secondsPassed)
         }
@@ -73,7 +71,7 @@ export class Player extends GameObject implements Character {
     }
 
     applyVelocity(secondsPassed: number) {
-        if (!this.rollIndicator && !this.attackIndicator) {
+        if (!this.dashIndicator && !this.attackIndicator) {
             if (this.velocityX < 0)
                 this.faceDirection = FaceDirection.LEFT
             else if (this.velocityX > 0)
@@ -88,7 +86,7 @@ export class Player extends GameObject implements Character {
 
     initMovement() {
         window.addEventListener('click', () => {
-            if (!this.rollIndicator && this.timePassedAttack <= 0 && !this.inAir) {
+            if (!this.dashIndicator && this.timePassedAttack <= 0 && !this.inAir) {
                 this.attackIndicator = true
                 this.activateDamage = true
             }
@@ -98,7 +96,7 @@ export class Player extends GameObject implements Character {
                 this.jumpIndicator = true
             }
             if (ev.key === ' ' && !this.inAir && this.rollCooldown <= 0 && !this.attackIndicator) {
-                this.rollIndicator = true
+                this.dashIndicator = true
                 this.crouchIndicator = false
                 this.resetCrouch()
             }
@@ -147,7 +145,7 @@ export class Player extends GameObject implements Character {
             this.posX = easeInOutQuint(this.timePassedRoll, this.posX, this.dashRange, 0.2)
             if (this.posX >= this.rollPosition) {
                 this.timePassedRoll = 0
-                this.rollIndicator = false
+                this.dashIndicator = false
                 this.posX = this.rollPosition
                 this.rollCooldown = Constants.playerRollCooldown
             }
@@ -156,7 +154,7 @@ export class Player extends GameObject implements Character {
             this.posX = easeInOutQuint(this.timePassedRoll, this.posX, -this.dashRange, 0.2)
             if (this.posX <= this.rollPosition) {
                 this.timePassedRoll = 0
-                this.rollIndicator = false
+                this.dashIndicator = false
                 this.posX = this.rollPosition
                 this.rollCooldown = Constants.playerRollCooldown
             }
@@ -222,15 +220,31 @@ export class Player extends GameObject implements Character {
         }
     }
 
-    draw() {
-        if (this.frame % 9 == 0) {
-            this.acc++;
-            if (this.acc >= 5)
-                this.acc = 0
-        }
-        this.sprites.spriteSheetPlayerIdle.drawIndividualSprite(this.acc, 0, 40, 80, this.posX - this.width/2, this.posY - this.height/2)
-        this.frame ++
-        super.draw(false);
+    animate() {
+        if (this.moveRightIndicator && !this.inAir && !this.dashIndicator && !this.crouchIndicator)
+            this.sprites.spriteSheetPlayerRunRight.animate(5, this.posX, this.posY + 23, 50, 80, this.width + 20, this.height)
+
+        else if (this.moveLeftIndicator && !this.inAir && !this.dashIndicator && !this.crouchIndicator)
+            this.sprites.spriteSheetPlayerRunLeft.animate(5, this.posX, this.posY + 23, 50, 80, this.width - 10, this.height)
+
+        else if (this.faceDirection == FaceDirection.RIGHT && !this.inAir && !this.crouchIndicator)
+            this.sprites.spriteSheetPlayerIdleRight.animate(10, this.posX, this.posY + 21, 40, 80, this.width, this.height)
+
+        else if (this.faceDirection == FaceDirection.LEFT && !this.inAir && !this.crouchIndicator)
+            this.sprites.spriteSheetPlayerIdleLeft.animate(10, this.posX, this.posY + 21, 40, 80, this.width, this.height)
+
+        else if (this.inAir && this.faceDirection == FaceDirection.RIGHT && this.velocityY <= 0)
+            this.sprites.spriteSheetPlayerJumpRight.animate(10, this.posX, this.posY + 23, 50, 80, this.width + 20, this.height)
+
+        else if (this.inAir && this.faceDirection == FaceDirection.LEFT && this.velocityY <= 0)
+            this.sprites.spriteSheetPlayerJumpLeft.animate(10, this.posX, this.posY + 23, 50, 80, this.width, this.height)
+
+        else if (this.inAir && this.faceDirection == FaceDirection.RIGHT && this.velocityY >= 0)
+            this.sprites.spriteSheetPlayerFallRight.animate(10, this.posX, this.posY + 23, 50, 80, this.width + 20, this.height)
+
+        else if (this.inAir && this.faceDirection == FaceDirection.LEFT && this.velocityY >= 0)
+            this.sprites.spriteSheetPlayerFallLeft.animate(10, this.posX, this.posY + 23, 50, 80, this.width, this.height)
+
     }
 
 }

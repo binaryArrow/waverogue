@@ -3,6 +3,7 @@ export class GameObject {
     gravity: number = 10
     velocityX: number = 0
     velocityY: number = 100
+    startVelocity: number = 100 // this must be same es velocityY, it is for calculating inair without a jump
     inAir: boolean = true
     posX: number
     posY: number
@@ -36,15 +37,17 @@ export class GameObject {
         this.fallSpeed = this.velocityY
     }
 
-    draw(visible: boolean) {
+    draw(visible: boolean, visibleOutlines: boolean) {
         this.context.imageSmoothingEnabled = false
         this.context.fillStyle = this.collides ? '#a66c6c' : '#94c781'
-        this.context.strokeStyle = '#000000'
+        this.context.strokeStyle = '#ff2929'
         this.context.lineWidth = 2
         if (visible) {
             this.context.fillRect(this.posX, this.posY, this.width, this.height)
             this.context.strokeRect(this.posX, this.posY, this.width, this.height)
         }
+        if(visibleOutlines)
+            this.context.strokeRect(this.posX, this.posY, this.width, this.height)
     }
 
     moveLeft(): void {
@@ -63,6 +66,8 @@ export class GameObject {
         secondsPassed = Math.min(secondsPassed, 0.012) // this piece of shit prevents falling when changing tabs
         this.velocityY += this.gravity
         this.posY += Math.floor(this.velocityY * secondsPassed)
+        if(this.velocityY > this.startVelocity + this.gravity)
+            this.inAir = true
     }
 
     update(secondsPassed: number): void {
