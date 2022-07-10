@@ -25,7 +25,7 @@ function init() {
     player = new Player(
         context,
         0,
-        520,
+        420,
         Constants.playerMoveSpeed,
         Constants.playerJumpSpeed,
         Constants.playerWidth,

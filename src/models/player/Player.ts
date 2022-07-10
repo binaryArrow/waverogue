@@ -39,9 +39,9 @@ export class Player extends GameObject implements Character {
 
 
     update(secondsPassed: number) {
-        this.animate()
-        this.draw(false, true)
+        this.draw(false, false)
         this.updateMovement(secondsPassed)
+        this.animate()
         this.applyVelocity(secondsPassed)
     }
 
@@ -60,7 +60,7 @@ export class Player extends GameObject implements Character {
             this.setRollPosition()
             this.applyRoll(secondsPassed)
         }
-        // attackin
+        // attacking
         if (this.attackIndicator) {
             this.applyAttack(secondsPassed)
         }
@@ -209,10 +209,13 @@ export class Player extends GameObject implements Character {
                 this.isCrouching = true
             }
         }
+        else {
+            this.resetCrouch()
+        }
     }
 
     resetCrouch(): void {
-        if (!this.inAir && this.isCrouching) {
+        if (this.isCrouching) {
             this.movementSpeed = Constants.playerMoveSpeed
             this.height = Constants.playerHeight
             this.posY -= Constants.playerHeightCrouch
@@ -234,16 +237,22 @@ export class Player extends GameObject implements Character {
             this.sprites.spriteSheetPlayerIdleLeft.animate(10, this.posX, this.posY + 21, 40, 80, this.width, this.height)
 
         else if (this.inAir && this.faceDirection == FaceDirection.RIGHT && this.velocityY <= 0)
-            this.sprites.spriteSheetPlayerJumpRight.animate(10, this.posX, this.posY + 23, 50, 80, this.width + 20, this.height)
+            this.sprites.spriteSheetPlayerJumpRight.animate(10, this.posX, this.posY + 23, 40, 80, this.width, this.height)
 
         else if (this.inAir && this.faceDirection == FaceDirection.LEFT && this.velocityY <= 0)
-            this.sprites.spriteSheetPlayerJumpLeft.animate(10, this.posX, this.posY + 23, 50, 80, this.width, this.height)
+            this.sprites.spriteSheetPlayerJumpLeft.animate(10, this.posX, this.posY + 23, 40, 80, this.width, this.height)
 
         else if (this.inAir && this.faceDirection == FaceDirection.RIGHT && this.velocityY >= 0)
-            this.sprites.spriteSheetPlayerFallRight.animate(10, this.posX, this.posY + 23, 50, 80, this.width + 20, this.height)
+            this.sprites.spriteSheetPlayerFallRight.animate(10, this.posX, this.posY + 23, 40, 80, this.width, this.height)
 
         else if (this.inAir && this.faceDirection == FaceDirection.LEFT && this.velocityY >= 0)
-            this.sprites.spriteSheetPlayerFallLeft.animate(10, this.posX, this.posY + 23, 50, 80, this.width, this.height)
+            this.sprites.spriteSheetPlayerFallLeft.animate(10, this.posX, this.posY + 23, 40, 80, this.width, this.height)
+
+        else if (this.crouchIndicator && this.faceDirection == FaceDirection.RIGHT && !this.inAir)
+            this.sprites.spriteSheetPlayerCrouchRight.animate(13, this.posX, this.posY - 28, 40, 80, this.width, this.height)
+
+        else if (this.crouchIndicator && this.faceDirection == FaceDirection.LEFT && !this.inAir)
+            this.sprites.spriteSheetPlayerCrouchLeft.animate(13, this.posX, this.posY - 28, 40, 80, this.width, this.height)
 
     }
 
