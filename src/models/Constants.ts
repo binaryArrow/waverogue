@@ -4,7 +4,6 @@ export class Constants{
     static playerHeight: number = 68 // if you change this, change playerheightcrouch aswell to half of this value
     static playerHeightCrouch: number = 34
     static playerMoveSpeed: number = 300
-    static playerMoveSpeedCrouch: number = 150
     static playerWidth: number = 20
     static playerJumpSpeed: number = 300
 }
