@@ -233,30 +233,36 @@ export class Player extends GameObject implements Character {
         else if (this.velocityX < 0 && !this.inAir && !this.dashIndicator && !this.crouchIndicator)
             this.sprites.spriteSheetPlayerRunLeft.animate(5, this.posX, this.posY + 23, 50, 80, this.width - 10, this.height)
 
-        else if (this.faceDirection == FaceDirection.RIGHT && !this.inAir && !this.crouchIndicator)
+        else if (this.faceDirection == FaceDirection.RIGHT && !this.inAir && !this.crouchIndicator && !this.dashIndicator)
             this.sprites.spriteSheetPlayerIdleRight.animate(10, this.posX, this.posY + 21, 40, 80, this.width, this.height)
 
-        else if (this.faceDirection == FaceDirection.LEFT && !this.inAir && !this.crouchIndicator)
+        else if (this.faceDirection == FaceDirection.LEFT && !this.inAir && !this.crouchIndicator && !this.dashIndicator)
             this.sprites.spriteSheetPlayerIdleLeft.animate(10, this.posX, this.posY + 21, 40, 80, this.width, this.height)
 
-        else if (this.inAir && this.faceDirection == FaceDirection.RIGHT && this.velocityY <= 0)
+        else if (this.inAir && this.faceDirection == FaceDirection.RIGHT && this.velocityY <= 0 && !this.dashIndicator)
             this.sprites.spriteSheetPlayerJumpRight.animate(10, this.posX, this.posY + 23, 40, 80, this.width, this.height)
 
-        else if (this.inAir && this.faceDirection == FaceDirection.LEFT && this.velocityY <= 0)
+        else if (this.inAir && this.faceDirection == FaceDirection.LEFT && this.velocityY <= 0 && !this.dashIndicator)
             this.sprites.spriteSheetPlayerJumpLeft.animate(10, this.posX, this.posY + 23, 40, 80, this.width, this.height)
 
-        else if (this.inAir && this.faceDirection == FaceDirection.RIGHT && this.velocityY >= 0)
+        else if (this.inAir && this.faceDirection == FaceDirection.RIGHT && this.velocityY >= 0 && !this.dashIndicator)
             this.sprites.spriteSheetPlayerFallRight.animate(10, this.posX, this.posY + 23, 40, 80, this.width, this.height)
 
-        else if (this.inAir && this.faceDirection == FaceDirection.LEFT && this.velocityY >= 0)
+        else if (this.inAir && this.faceDirection == FaceDirection.LEFT && this.velocityY >= 0 && !this.dashIndicator)
             this.sprites.spriteSheetPlayerFallLeft.animate(10, this.posX, this.posY + 23, 40, 80, this.width, this.height)
 
-        else if (this.crouchIndicator && this.faceDirection == FaceDirection.RIGHT && !this.inAir)
+        else if (this.crouchIndicator && this.faceDirection == FaceDirection.RIGHT && !this.inAir && !this.dashIndicator)
             this.sprites.spriteSheetPlayerCrouchRight.animate(13, this.posX, this.posY - 28, 40, 80, this.width, this.height)
 
-        else if (this.crouchIndicator && this.faceDirection == FaceDirection.LEFT && !this.inAir)
+        else if (this.crouchIndicator && this.faceDirection == FaceDirection.LEFT && !this.inAir && !this.dashIndicator)
             this.sprites.spriteSheetPlayerCrouchLeft.animate(13, this.posX, this.posY - 28, 40, 80, this.width, this.height)
 
+        if ( this.dashIndicator && this.faceDirection == FaceDirection.RIGHT && !this.inAir) {
+            this.sprites.spritePlayerDashRight.drawSprite(this.posX, this.posY - 23, 120, 88)
+        }
+        if ( this.dashIndicator && this.faceDirection == FaceDirection.LEFT && !this.inAir) {
+            this.sprites.spritePlayerDashLeft.drawSprite(this.posX - 4*this.width, this.posY - 23, 120, 88)
+        }
     }
 
 }
