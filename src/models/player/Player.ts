@@ -46,9 +46,9 @@ export class Player extends GameObject implements Character {
     }
 
     updateMovement(secondsPassed: number) {
-        if (this.moveLeftIndicator)
+        if (this.moveLeftIndicator && !this.crouchIndicator)
             this.moveLeft()
-        else if (this.moveRightIndicator)
+        else if (this.moveRightIndicator && !this.crouchIndicator)
             this.moveRight()
         else if (!(this.moveRightIndicator && this.moveLeftIndicator))
             this.stopMovingXAxis()
@@ -67,6 +67,10 @@ export class Player extends GameObject implements Character {
         // crouch
         if (this.crouchIndicator) {
             this.applyCrouch()
+            if (this.moveLeftIndicator)
+                this.faceDirection = FaceDirection.LEFT
+            if (this.moveRightIndicator)
+                this.faceDirection = FaceDirection.RIGHT
         }
     }
 
@@ -110,7 +114,8 @@ export class Player extends GameObject implements Character {
                     this.moveRightIndicator = true
                     break;
                 case 's':
-                    this.crouchIndicator = true
+                    if (!this.inAir)
+                        this.crouchIndicator = true
                     break;
             }
         })
@@ -203,13 +208,11 @@ export class Player extends GameObject implements Character {
     applyCrouch(): void {
         if (!this.inAir) {
             this.height = Constants.playerHeightCrouch
-            this.movementSpeed = Constants.playerMoveSpeedCrouch
             if (!this.isCrouching) {
                 this.posY += Constants.playerHeightCrouch
                 this.isCrouching = true
             }
-        }
-        else {
+        } else {
             this.resetCrouch()
         }
     }
@@ -224,10 +227,10 @@ export class Player extends GameObject implements Character {
     }
 
     animate() {
-        if (this.moveRightIndicator && !this.inAir && !this.dashIndicator && !this.crouchIndicator)
+        if (this.velocityX > 0 && !this.inAir && !this.dashIndicator && !this.crouchIndicator)
             this.sprites.spriteSheetPlayerRunRight.animate(5, this.posX, this.posY + 23, 50, 80, this.width + 20, this.height)
 
-        else if (this.moveLeftIndicator && !this.inAir && !this.dashIndicator && !this.crouchIndicator)
+        else if (this.velocityX < 0 && !this.inAir && !this.dashIndicator && !this.crouchIndicator)
             this.sprites.spriteSheetPlayerRunLeft.animate(5, this.posX, this.posY + 23, 50, 80, this.width - 10, this.height)
 
         else if (this.faceDirection == FaceDirection.RIGHT && !this.inAir && !this.crouchIndicator)
