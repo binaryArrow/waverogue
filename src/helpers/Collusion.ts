@@ -41,15 +41,21 @@ export class Collusion {
                     switch (this.checkLeftOrRightCollusion(gameObject, mapElement)) {
                         case WallCollusionpoints.LEFT: {
                             // mapElement.collides = true
+                            if(this.mapElements.filter(it => it.playerCollides).length > 0)
+                                gameObject.collides = true
                             gameObject.posX = mapElement.x - gameObject.width
                             break;
                         }
                         case WallCollusionpoints.RIGHT: {
                             // mapElement.collides = true
+                            if(this.mapElements.filter(it => it.playerCollides).length > 0)
+                                gameObject.collides = true
                             gameObject.posX = mapElement.x + mapElement.width
                             break;
                         }
                         default: {
+                            if(this.mapElements.filter(it => it.playerCollides).length == 0)
+                                gameObject.collides = false
                             mapElement.collides = false
                         }
                     }
@@ -71,23 +77,28 @@ export class Collusion {
             if (mapElement.width <= 5) {
                 if (object.posX + object.width <= mapElement.x + mapElement.width * 2) {
                     // console.log("left collusion")
+                    mapElement.playerCollides = true
                     return WallCollusionpoints.LEFT
                 }
                 if (object.posX >= mapElement.x - mapElement.width) {
                     // console.log("right collusion")
+                    mapElement.playerCollides = true
                     return WallCollusionpoints.RIGHT
                 }
             } else {
                 if (object.posX + object.width <= mapElement.x + mapElement.width) {
                     // console.log("left collusion")
+                    mapElement.playerCollides = true
                     return WallCollusionpoints.LEFT
                 }
                 if (object.posX >= mapElement.x - mapElement.width) {
                     // console.log("right collusion")
+                    mapElement.playerCollides = true
                     return WallCollusionpoints.RIGHT
                 }
             }
         }
+        mapElement.playerCollides = false
         return WallCollusionpoints.NONE
     }
 
