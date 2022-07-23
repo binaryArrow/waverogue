@@ -39,7 +39,7 @@ export class Player extends GameObject implements Character {
 
 
     update(secondsPassed: number) {
-        this.draw(false, false)
+        this.draw(false, true)
         this.updateMovement(secondsPassed)
         this.animate()
         this.applyVelocity(secondsPassed)
@@ -99,7 +99,7 @@ export class Player extends GameObject implements Character {
             if (ev.key === 'w' && !this.inAir && !this.isCrouching) {
                 this.jumpIndicator = true
             }
-            if (ev.key === ' ' && !this.inAir && this.rollCooldown <= 0 && !this.attackIndicator) {
+            if (ev.key === ' ' && !this.inAir && this.rollCooldown <= 0 && !this.attackIndicator && !this.collides) {
                 this.dashIndicator = true
                 this.crouchIndicator = false
                 this.resetCrouch()
@@ -148,6 +148,9 @@ export class Player extends GameObject implements Character {
 
         if (this.faceDirection === FaceDirection.RIGHT) {
             this.posX = easeInOutQuint(this.timePassedRoll, this.posX, this.dashRange, 0.2)
+            if (!this.collides)
+                this.sprites.spritePlayerDashRight.drawSprite(this.posX - this.width * 2, this.posY - 23, 120, 88)
+            else this.sprites.spriteSheetPlayerIdleRight.animate(10, this.posX, this.posY + 21, 40, 80, this.width, this.height)
             if (this.posX >= this.rollPosition) {
                 this.timePassedRoll = 0
                 this.dashIndicator = false
@@ -157,6 +160,9 @@ export class Player extends GameObject implements Character {
         }
         if (this.faceDirection === FaceDirection.LEFT) {
             this.posX = easeInOutQuint(this.timePassedRoll, this.posX, -this.dashRange, 0.2)
+            if (!this.collides)
+                this.sprites.spritePlayerDashLeft.drawSprite(this.posX - this.width * 2 -10, this.posY - 23, 120, 88)
+            else this.sprites.spriteSheetPlayerIdleLeft.animate(10, this.posX, this.posY + 21, 40, 80, this.width, this.height)
             if (this.posX <= this.rollPosition) {
                 this.timePassedRoll = 0
                 this.dashIndicator = false
@@ -257,12 +263,6 @@ export class Player extends GameObject implements Character {
         else if (this.crouchIndicator && this.faceDirection == FaceDirection.LEFT && !this.inAir && !this.dashIndicator)
             this.sprites.spriteSheetPlayerCrouchLeft.animate(13, this.posX, this.posY - 28, 40, 80, this.width, this.height)
 
-        if ( this.dashIndicator && this.faceDirection == FaceDirection.RIGHT && !this.inAir) {
-            this.sprites.spritePlayerDashRight.drawSprite(this.posX, this.posY - 23, 120, 88)
-        }
-        if ( this.dashIndicator && this.faceDirection == FaceDirection.LEFT && !this.inAir) {
-            this.sprites.spritePlayerDashLeft.drawSprite(this.posX - 4*this.width, this.posY - 23, 120, 88)
-        }
     }
 
 }
