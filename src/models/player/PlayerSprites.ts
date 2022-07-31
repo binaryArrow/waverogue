@@ -10,6 +10,8 @@ import playerCrouchRight from "../../assets/player/player_crouch_right.png"
 import playerCrouchLeft from "../../assets/player/player_crouch_left.png"
 import playerDashRight from "../../assets/player/player_dash_right.png"
 import playerDashLeft from "../../assets/player/player_dash_left.png"
+import playerAttack1Right from "../../assets/player/player_attack_1_right.png"
+import playerAttack1Left from "../../assets/player/player_attack_1_left.png"
 import {SpriteSheet} from "../SpriteSheet";
 import {Sprite} from "../Sprite";
 
@@ -26,6 +28,8 @@ export class PlayerSprites{
     spriteSheetPlayerFallLeft: SpriteSheet
     spriteSheetPlayerCrouchRight: SpriteSheet
     spriteSheetPlayerCrouchLeft: SpriteSheet
+    spriteSheetPlayerAttack1Right: SpriteSheet
+    spriteSheetPlayerAttack1Left: SpriteSheet
     spritePlayerDashRight: Sprite
     spritePlayerDashLeft: Sprite
 
@@ -41,6 +45,8 @@ export class PlayerSprites{
         this.spriteSheetPlayerFallLeft = new SpriteSheet(24, 37,3,  playerFallLeft, context)
         this.spriteSheetPlayerCrouchRight = new SpriteSheet(24, 37,4,  playerCrouchRight, context)
         this.spriteSheetPlayerCrouchLeft = new SpriteSheet(24, 37,4,  playerCrouchLeft, context)
+        this.spriteSheetPlayerAttack1Right = new SpriteSheet(56, 44, 8, playerAttack1Right, context)
+        this.spriteSheetPlayerAttack1Left = new SpriteSheet(56, 44, 8, playerAttack1Left, context)
         this.spritePlayerDashRight = new Sprite(playerDashRight, context)
         this.spritePlayerDashLeft = new Sprite(playerDashLeft, context)
 

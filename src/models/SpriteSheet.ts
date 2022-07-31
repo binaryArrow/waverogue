@@ -41,4 +41,7 @@ export class SpriteSheet {
             this.frame = 0
 
     }
+    resetActualsprite(){
+        this.actualSprite = 0
+    }
 }
