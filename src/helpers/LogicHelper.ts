@@ -35,8 +35,6 @@ export class LogicHelper {
                         element.health -= player.attackDamage
                     player.activateDamage = false
                     element.hit = true
-                } else {
-                    element.hit = false
                 }
             // if (element instanceof Skeleton)
             //     console.log(element.health)

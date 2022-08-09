@@ -13,7 +13,7 @@ export class Skeleton extends GameObject implements Character {
     sprites: SkeletonSprites = new SkeletonSprites(this.context)
 
     update(secondsPassed: number) {
-        this.draw(false, false)
+        this.draw(false, true)
         this.applyVelocity(secondsPassed)
         this.animate()
     }
@@ -30,16 +30,23 @@ export class Skeleton extends GameObject implements Character {
             this.context.fillStyle = '#ff0000'
         this.context.strokeStyle = '#000000'
         this.context.lineWidth = 2
-        if(visible) {
+        if (visible) {
             this.context.fillRect(this.posX, this.posY, this.width, this.height)
             this.context.strokeRect(this.posX, this.posY, this.width, this.height)
         }
-        if(visibleOutlines)
+        if (visibleOutlines)
             this.context.strokeRect(this.posX, this.posY, this.width, this.height)
     }
 
     animate(): void {
-        this.sprites.spriteSheetIdleRight.animate(10, this.posX - 65, this.posY + 34, 180, 100, this.width, this.height)
+        if (!this.hit)
+            this.sprites.spriteSheetIdleRight.animate(12, this.posX - 65, this.posY + 34, 180, 100, this.width, this.height)
+
+        else if(this.hit) {
+            this.sprites.spriteSheetTakeHitRight.animate(7, this.posX - 65, this.posY - 48, 180, 270, this.width, this.height)
+            if (this.sprites.spriteSheetTakeHitRight.animationFinished()) this.hit = false
+        }
+        console.log(this.sprites.spriteSheetTakeHitRight.actualSprite)
     }
 
     updateMovement(secondsPast: number): void {
