@@ -2,7 +2,7 @@ import {Collusion} from "../../helpers/Collusion";
 import {MapElement} from "./MapElement";
 import {LogicHelper} from "../../helpers/LogicHelper";
 import {Player} from "../player/Player";
-import {Enemy} from "../Enemy";
+import {Skeleton} from "../enemies/Skeleton";
 import {GameObject} from "../GameObject";
 
 export class Level {
@@ -10,9 +10,9 @@ export class Level {
     mapElements: MapElement[]
     collusion: Collusion
     player: Player
-    enemies: Enemy[]
+    enemies: Skeleton[]
 
-    constructor(context: CanvasRenderingContext2D, mapElements: MapElement[], player: Player, enemies: Enemy[]) {
+    constructor(context: CanvasRenderingContext2D, mapElements: MapElement[], player: Player, enemies: Skeleton[]) {
         this.context = context
         this.mapElements = mapElements
         this.player = player

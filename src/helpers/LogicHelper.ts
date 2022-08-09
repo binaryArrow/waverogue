@@ -1,7 +1,7 @@
 import {GameObject} from "../models/GameObject";
 import {Player} from "../models/player/Player";
 import {RectHitbox} from "../models/RectHitbox";
-import {Enemy} from "../models/Enemy";
+import {Skeleton} from "../models/enemies/Skeleton";
 
 export class LogicHelper {
     static detectCharacterCollusions(gameObjects: GameObject[]) {
@@ -29,7 +29,7 @@ export class LogicHelper {
 
     static playerAttackCollusion(player: Player, gameObjects: GameObject[]) {
         for (const element of gameObjects) {
-            if (element instanceof Enemy)
+            if (element instanceof Skeleton)
                 if (player.attackIndicator && this.rectangularHitBoxIntersect(element, player.attackHitbox)) {
                     if (player.activateDamage)
                         element.health -= player.attackDamage
@@ -38,7 +38,7 @@ export class LogicHelper {
                 } else {
                     element.hit = false
                 }
-            // if (element instanceof Enemy)
+            // if (element instanceof Skeleton)
             //     console.log(element.health)
         }
     }
@@ -52,7 +52,7 @@ export class LogicHelper {
             object2.posY > object1.height + object1.posY)
     }
 
-    static deleteDeadEnemies(elements: Enemy[]): Enemy[] {
+    static deleteDeadEnemies(elements: Skeleton[]): Skeleton[] {
         return elements.filter(element => element.health >= 0)
     }
 }

@@ -1,5 +1,5 @@
 import {Player} from "./models/player/Player";
-import {Enemy} from "./models/Enemy";
+import {Skeleton} from "./models/enemies/Skeleton";
 import {LevelHelper} from "./helpers/LevelHelper";
 import {Constants} from "./models/Constants";
 import {InitHelper} from "./helpers/InitHelper";
@@ -12,7 +12,7 @@ let fps
 let canvas: HTMLCanvasElement
 let context: CanvasRenderingContext2D
 let player: Player
-let enemies: Enemy[]
+let enemies: Skeleton[]
 let levelHelper: LevelHelper
 window.onload = init
 

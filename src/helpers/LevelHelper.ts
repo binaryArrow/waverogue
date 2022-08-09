@@ -3,12 +3,12 @@ import {StaticMapObject} from "../models/levelmodels/StaticMapObject";
 import {Level1} from "../models/levels/Level1";
 import {Level} from "../models/levelmodels/Level";
 import {Player} from "../models/player/Player";
-import {Enemy} from "../models/Enemy";
+import {Skeleton} from "../models/enemies/Skeleton";
 
 export class LevelHelper {
     levels: Level[] = []
 
-    constructor(context: CanvasRenderingContext2D, player: Player, enemies: Enemy[]) {
+    constructor(context: CanvasRenderingContext2D, player: Player, enemies: Skeleton[]) {
         this.levels.push(
             new Level1(
                 context,
