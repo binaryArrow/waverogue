@@ -29,19 +29,24 @@ export class SpriteSheet {
             width,
             height);
     }
-    animate(speed: number, posX: number, posY: number, width: number, height: number, playerWidth: number, playerHeight: number){
+
+    animate(speed: number, posX: number, posY: number, width: number, height: number, playerWidth: number, playerHeight: number) {
         if (this.frame % speed == 0) {
             this.actualSprite++;
             if (this.actualSprite >= this.singleSpriteCount)
                 this.actualSprite = 0
         }
-        this.drawIndividualSprite(this.actualSprite, 0, width, height, posX - playerWidth/2, posY - playerHeight/2)
-        this.frame ++
-        if(this.frame >= 60)
+        this.drawIndividualSprite(this.actualSprite, 0, width, height, posX - playerWidth / 2, posY - playerHeight / 2)
+        this.frame++
+        if (this.frame >= 60)
             this.frame = 0
-
     }
-    resetActualsprite(){
+
+    animationFinished(): boolean {
+        return this.actualSprite === this.singleSpriteCount || this.actualSprite == 0;
+    }
+
+    resetActualsprite() {
         this.actualSprite = 0
     }
 }

@@ -211,7 +211,6 @@ export class Player extends GameObject implements Character {
                 this.timePassedAttack = 0
             }
         }
-        console.log(this.attackHitbox)
     }
 
     jump(): void {
