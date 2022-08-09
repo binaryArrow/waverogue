@@ -241,7 +241,7 @@ export class Player extends GameObject implements Character {
         }
     }
 
-    animate() {
+    animate(): void {
         if (this.velocityX > 0 && !this.inAir && !this.dashIndicator && !this.crouchIndicator && !this.attackIndicator)
             this.sprites.spriteSheetPlayerRunRight.animate(5, this.posX, this.posY + 23, 50, 80, this.width + 20, this.height)
 
