@@ -1,7 +1,9 @@
 import {Skeleton} from "../models/enemies/Skeleton";
+import {Constants} from "../models/Constants";
+import {Player} from "../models/player/Player";
 
 export class InitHelper {
-    static spawnEnemies(amount: number, context: CanvasRenderingContext2D): Skeleton[] {
+    static spawnEnemies(amount: number, context: CanvasRenderingContext2D, player: Player): Skeleton[] {
         let enemies: Skeleton[] = []
         for (let i = 0; i <= amount; i++) {
             enemies.push(
@@ -9,10 +11,11 @@ export class InitHelper {
                     context,
                     Math.floor(Math.random() * 1500),
                     300,
+                    Constants.skeletonMovementSpeed,
                     300,
-                    300,
-                    50,
-                    50,
+                    Constants.skeletonWidth,
+                    Constants.skeletonHeight,
+                    player
                 )
             )
         }

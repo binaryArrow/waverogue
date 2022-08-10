@@ -10,4 +10,5 @@ export class Constants{
 
     static skeletonHeight: number = 90
     static skeletonWidth: number = 30
+    static skeletonMovementSpeed: number = 150
 }
