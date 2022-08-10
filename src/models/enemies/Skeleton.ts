@@ -2,6 +2,7 @@ import {GameObject} from "../GameObject";
 import {Character, FaceDirection} from "../Character";
 import {SkeletonSprites} from "./SkeletonSprites";
 import {Constants} from "../Constants";
+import {Player} from "../player/Player";
 
 export class Skeleton extends GameObject implements Character {
 
@@ -11,18 +12,32 @@ export class Skeleton extends GameObject implements Character {
     width: number = Constants.skeletonWidth
     height: number = Constants.skeletonHeight
     sprites: SkeletonSprites = new SkeletonSprites(this.context)
+    otherGemObject: Player
+
+    constructor(context: CanvasRenderingContext2D,
+                x: number,
+                y: number,
+                movementSpeed: number,
+                jumpSpeed: number,
+                width: number,
+                height: number,
+                player: Player
+    ) {
+        super(context, x, y, movementSpeed, jumpSpeed, width, height);
+        this.otherGemObject = player
+    }
 
     update(secondsPassed: number) {
         this.draw(false, true)
-        this.applyVelocity(secondsPassed)
+        this.updateMovement(secondsPassed)
         this.animate()
+        this.applyVelocity(secondsPassed)
     }
 
     applyVelocity(secondsPassed: number) {
         this.posX += this.velocityX * secondsPassed
         this.fall(secondsPassed)
     }
-
 
     draw(visible: boolean, visibleOutlines: boolean) {
         this.context.fillStyle = this.collides ? '#a66c6c' : '#ba81c7'
@@ -42,7 +57,8 @@ export class Skeleton extends GameObject implements Character {
         if (!this.hit)
             this.sprites.spriteSheetIdleRight.animate(12, this.posX - 65, this.posY + 34, 180, 100, this.width, this.height)
 
-        else if(this.hit) {
+        else if (this.hit) {
+            this.stopMovingXAxis()
             this.sprites.spriteSheetTakeHitRight.animate(7, this.posX - 65, this.posY - 48, 180, 270, this.width, this.height)
             if (this.sprites.spriteSheetTakeHitRight.animationFinished()) this.hit = false
         }
@@ -50,6 +66,10 @@ export class Skeleton extends GameObject implements Character {
     }
 
     updateMovement(secondsPast: number): void {
+        if (this.otherGemObject.posX < this.posX)
+            this.moveLeft()
+        else
+            this.moveRight()
     }
 
     setRollPosition(secondsPast: number): void {
