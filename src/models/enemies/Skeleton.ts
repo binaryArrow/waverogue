@@ -3,16 +3,20 @@ import {Character, FaceDirection} from "../Character";
 import {SkeletonSprites} from "./SkeletonSprites";
 import {Constants} from "../Constants";
 import {Player} from "../player/Player";
+import {RectHitbox} from "../RectHitbox";
 
 export class Skeleton extends GameObject implements Character {
 
     faceDirection: FaceDirection = FaceDirection.RIGHT
     health: number = 100
-    attackDamage: number = 10
+    attackDamage: number = 50
+    attackIndicator: boolean = false
     width: number = Constants.skeletonWidth
     height: number = Constants.skeletonHeight
+    attackHitbox: RectHitbox = new RectHitbox(this.posX, this.posY, this.width * 2, this.height)
+    timePassedAttack: number = 0
     sprites: SkeletonSprites = new SkeletonSprites(this.context)
-    otherGemObject: Player
+    referenceGameObject: Player
 
     constructor(context: CanvasRenderingContext2D,
                 x: number,
@@ -24,7 +28,7 @@ export class Skeleton extends GameObject implements Character {
                 player: Player
     ) {
         super(context, x, y, movementSpeed, jumpSpeed, width, height);
-        this.otherGemObject = player
+        this.referenceGameObject = player
     }
 
     update(secondsPassed: number) {
@@ -55,16 +59,20 @@ export class Skeleton extends GameObject implements Character {
 
 
     updateMovement(secondsPassed: number): void {
-        if (this.otherGemObject.posX + this.otherGemObject.width < this.posX) {
+        if (this.referenceGameObject.posX + this.referenceGameObject.width < this.posX && !this.attackIndicator) {
             this.moveLeft()
             this.faceDirection = FaceDirection.LEFT
-        } else if (this.otherGemObject.posX > this.posX + this.width) {
+        } else if (this.referenceGameObject.posX > this.posX + this.width && !this.attackIndicator) {
             this.moveRight()
             this.faceDirection = FaceDirection.RIGHT
         }
-        else this.stopMovingXAxis()
-        console.log(this.velocityX)
-        console.log(this.movementSpeed)
+        else{
+            this.stopMovingXAxis()
+            this.attackIndicator = true
+        }
+        if (this.attackIndicator) {
+            this.applyAttack(secondsPassed)
+        }
     }
 
     animate(): void {
@@ -91,10 +99,44 @@ export class Skeleton extends GameObject implements Character {
             this.sprites.spriteSheetWalkRight.animate(12, this.posX - 65, this.posY - 48, 180, 270, this.width, this.height)
     }
 
-    setRollPosition(secondsPast: number): void {
+    setRollPosition(secondsPast: number) {
     }
 
-    jump(): void {
+    jump() {
     }
 
+    applyAttack(secondsPassed: number) {
+        this.timePassedAttack += secondsPassed
+        if (this.faceDirection === FaceDirection.RIGHT && this.timePassedAttack > Constants.activateAttackHitbox && !this.hit) {
+            this.context.strokeStyle = '#000000'
+            this.attackHitbox = {
+                posX: this.posX + this.width,
+                posY: this.posY,
+                width: this.width * 2,
+                height: this.height
+            }
+            // show hitbox-----
+            this.context.fillRect(this.attackHitbox.posX, this.attackHitbox.posY, this.attackHitbox.width, this.attackHitbox.height)
+
+            if (this.timePassedAttack >= Constants.skeletonAttackSpeed) {
+                this.attackIndicator = false
+                this.timePassedAttack = 0
+            }
+        }
+        if (this.faceDirection === FaceDirection.LEFT && this.timePassedAttack > Constants.activateAttackHitbox && !this.hit) {
+            this.context.strokeStyle = '#000000'
+            this.attackHitbox = {
+                posX: this.posX - this.width * 2,
+                posY: this.posY,
+                width: this.width * 2,
+                height: this.height
+            }
+            // show hitbox ----
+            this.context.fillRect(this.attackHitbox.posX, this.attackHitbox.posY, this.attackHitbox.width, this.attackHitbox.height)
+            if (this.timePassedAttack >= Constants.skeletonAttackSpeed) {
+                this.attackIndicator = false
+                this.timePassedAttack = 0
+            }
+        }
+    }
 }
