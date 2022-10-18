@@ -2,6 +2,7 @@ import {GameObject} from "../models/GameObject";
 import {Player} from "../models/player/Player";
 import {RectHitbox} from "../models/RectHitbox";
 import {Skeleton} from "../models/enemies/Skeleton";
+import {Constants} from "../models/Constants";
 
 export class LogicHelper {
     static detectCharacterCollusions(gameObjects: GameObject[]) {
@@ -35,6 +36,7 @@ export class LogicHelper {
                         element.health -= player.attackDamage
                     player.activateDamage = false
                     element.hit = true
+                    element.hitCooldown = Constants.skeletonHitCooldown
                 }
             // if (element instanceof Skeleton)
             //     console.log(element.health)
