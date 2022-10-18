@@ -21,6 +21,7 @@ export class Player extends GameObject implements Character {
     attackDamage: number = 10
     activateDamage: boolean = false
     rollPosition: number
+    attackCooldown: number = 0
 
     constructor(
         context: CanvasRenderingContext2D,
@@ -39,7 +40,7 @@ export class Player extends GameObject implements Character {
 
 
     update(secondsPassed: number) {
-        this.draw(false, false)
+        this.draw(false, true)
         this.updateMovement(secondsPassed)
         this.animate()
         this.applyVelocity(secondsPassed)
@@ -83,6 +84,8 @@ export class Player extends GameObject implements Character {
             this.posX += this.velocityX * secondsPassed
             if (this.rollCooldown > 0)
                 this.rollCooldown -= secondsPassed
+            if (this.attackCooldown > 0)
+                this.attackCooldown -= secondsPassed
         }
         this.fall(secondsPassed)
     }
@@ -90,7 +93,7 @@ export class Player extends GameObject implements Character {
 
     initMovement() {
         window.addEventListener('click', () => {
-            if (!this.dashIndicator && this.timePassedAttack <= 0 && !this.inAir && !this.crouchIndicator) {
+            if (!this.dashIndicator && this.timePassedAttack <= 0 && !this.inAir && !this.crouchIndicator && this.attackCooldown <= 0) {
                 this.attackIndicator = true
                 this.activateDamage = true
                 this.attackHitbox = {
@@ -194,6 +197,7 @@ export class Player extends GameObject implements Character {
             if (this.timePassedAttack >= Constants.playerAttackSpeed) {
                 this.attackIndicator = false
                 this.timePassedAttack = 0
+                this.attackCooldown = Constants.playerAttackCooldown
             }
         }
         if (this.faceDirection === FaceDirection.LEFT && this.timePassedAttack > Constants.activateAttackHitbox) {
@@ -209,6 +213,7 @@ export class Player extends GameObject implements Character {
             if (this.timePassedAttack >= Constants.playerAttackSpeed) {
                 this.attackIndicator = false
                 this.timePassedAttack = 0
+                this.attackCooldown = Constants.playerAttackCooldown
             }
         }
     }
