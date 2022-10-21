@@ -28,6 +28,6 @@ export class SkeletonSprites{
         this.spriteSheetWalkRight = new SpriteSheet(150, 150, 4, skeletonWalkRight, this.context)
         this.spriteSheetWalkLeft = new SpriteSheet(150, 150, 4, skeletonWalkLeft, this.context)
         this.spriteSheetAttackRight = new SpriteSheet(150, 58, 7, skeletonAttackRight, this.context)
-        this.spriteSheetAttackLeft = new SpriteSheet(140, 58, 7, skeletonAttackLeft, this.context)
+        this.spriteSheetAttackLeft = new SpriteSheet(80, 58, 7, skeletonAttackLeft, this.context)
     }
 }
