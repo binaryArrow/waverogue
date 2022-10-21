@@ -19,6 +19,7 @@ export class Skeleton extends GameObject implements Character {
     sprites: SkeletonSprites = new SkeletonSprites(this.context)
     referenceGameObject: Player
     hitCooldown: number = 0
+    attackCooldown: number = 0
 
     constructor(context: CanvasRenderingContext2D,
                 x: number,
@@ -45,6 +46,8 @@ export class Skeleton extends GameObject implements Character {
         this.fall(secondsPassed)
         if (this.hitCooldown > 0)
             this.hitCooldown -= secondsPassed
+        if (this.attackCooldown > 0)
+            this.attackCooldown -= secondsPassed
     }
 
     draw(visible: boolean, visibleOutlines: boolean) {
@@ -63,17 +66,25 @@ export class Skeleton extends GameObject implements Character {
 
 
     updateMovement(secondsPassed: number): void {
-        if (this.referenceGameObject.posX + this.referenceGameObject.width < this.posX && !this.attackIndicator) {
+        if (this.referenceGameObject.posX + this.referenceGameObject.width * 2 + 10 < this.posX && !this.attackIndicator) {
             this.moveLeft()
             this.faceDirection = FaceDirection.LEFT
-        } else if (this.referenceGameObject.posX > this.posX + this.width && !this.attackIndicator) {
+        } else if (this.referenceGameObject.posX > this.posX + this.width * 2 && !this.attackIndicator) {
             this.moveRight()
             this.faceDirection = FaceDirection.RIGHT
         }
         else{
             this.stopMovingXAxis()
         }
-        if(LogicHelper.rectangularHitBoxIntersect(this.referenceGameObject, {posX: this.posX, posY: this.posY, width: this.width * 2, height: this.height}))
+        // right
+        if(LogicHelper.rectangularHitBoxIntersect(
+            this.referenceGameObject, {posX: this.posX, posY: this.posY, width: this.width * 2, height: this.height}) &&
+            this.attackCooldown <= 0
+        ||
+            LogicHelper.rectangularHitBoxIntersect(
+                this.referenceGameObject, {posX: this.posX - this.width, posY: this.posY, width: this.width *2, height: this.height}) &&
+            this.attackCooldown <= 0
+        )
             this.attackIndicator = true
         if (this.attackIndicator && this.hitCooldown <= 0) {
             this.applyAttack(secondsPassed)
@@ -85,7 +96,7 @@ export class Skeleton extends GameObject implements Character {
             this.sprites.spriteSheetIdleRight.animate(12, this.posX - 65, this.posY + 34, 180, 100, this.width, this.height)
 
         else if (!this.hit && this.faceDirection == FaceDirection.LEFT && this.velocityX == 0 && !this.attackIndicator)
-            this.sprites.spriteSheetIdleLeft.animate(12, this.posX - 45, this.posY + 34, 180, 100, this.width, this.height)
+            this.sprites.spriteSheetIdleLeft.animate(12, this.posX - 56, this.posY + 34, 180, 100, this.width, this.height)
 
         else if (this.hit && this.faceDirection == FaceDirection.RIGHT) {
             this.stopMovingXAxis()
@@ -98,19 +109,19 @@ export class Skeleton extends GameObject implements Character {
             if (this.sprites.spriteSheetTakeHitLeft.animationFinished()) this.hit = false
         }
         else if (this.velocityX < 0 && this.faceDirection == FaceDirection.LEFT && !this.attackIndicator)
-            this.sprites.spriteSheetWalkLeft.animate(12, this.posX - 65, this.posY - 48, 180, 270, this.width, this.height)
+            this.sprites.spriteSheetWalkLeft.animate(12, this.posX - 72, this.posY - 48, 180, 270, this.width, this.height)
 
         else if (this.velocityX > 0 && this.faceDirection == FaceDirection.RIGHT && !this.attackIndicator)
             this.sprites.spriteSheetWalkRight.animate(12, this.posX - 65, this.posY - 48, 180, 270, this.width, this.height)
 
         if (this.attackIndicator && this.faceDirection == FaceDirection.RIGHT && !this.hit) {
             this.stopMovingXAxis()
-            this.sprites.spriteSheetAttackRight.animate(5, this.posX, this.posY + 40, 180, 100, this.width, this.height)
+            this.sprites.spriteSheetAttackRight.animate(4, this.posX - 60, this.posY + 35, 180, 100, this.width, this.height)
         } else this.sprites.spriteSheetAttackRight.resetActualsprite()
 
         if (this.attackIndicator && this.faceDirection == FaceDirection.LEFT && !this.hit) {
             this.stopMovingXAxis()
-            this.sprites.spriteSheetAttackLeft.animate(5, this.posX, this.posY + 40, 180, 100, this.width, this.height)
+            this.sprites.spriteSheetAttackLeft.animate(4, this.posX - 40, this.posY + 35, 100, 105, this.width, this.height)
         } else this.sprites.spriteSheetAttackLeft.resetActualsprite()
     }
 
@@ -122,12 +133,12 @@ export class Skeleton extends GameObject implements Character {
 
     applyAttack(secondsPassed: number) {
         this.timePassedAttack += secondsPassed
-        if (this.faceDirection === FaceDirection.RIGHT && this.timePassedAttack > Constants.activateAttackHitbox) {
+        if (this.faceDirection === FaceDirection.RIGHT && this.timePassedAttack > Constants.skeletonActivateHitbox) {
             this.context.strokeStyle = '#000000'
             this.attackHitbox = {
                 posX: this.posX,
                 posY: this.posY,
-                width: this.width * 2 + 10,
+                width: this.width * 3,
                 height: this.height
             }
             // show hitbox-----
@@ -136,14 +147,15 @@ export class Skeleton extends GameObject implements Character {
             if (this.timePassedAttack >= Constants.skeletonAttackSpeed) {
                 this.attackIndicator = false
                 this.timePassedAttack = 0
+                this.attackCooldown = Constants.skeletonAttackCooldown
             }
         }
         if (this.faceDirection === FaceDirection.LEFT && this.timePassedAttack > Constants.activateAttackHitbox) {
             this.context.strokeStyle = '#000000'
             this.attackHitbox = {
-                posX: this.posX - this.width - 10,
+                posX: this.posX - this.width - 30,
                 posY: this.posY,
-                width: this.width * 2 + 10,
+                width: this.width * 3,
                 height: this.height
             }
             // show hitbox ----
@@ -151,6 +163,7 @@ export class Skeleton extends GameObject implements Character {
             if (this.timePassedAttack >= Constants.skeletonAttackSpeed) {
                 this.attackIndicator = false
                 this.timePassedAttack = 0
+                this.attackCooldown = Constants.skeletonAttackCooldown
             }
         }
     }

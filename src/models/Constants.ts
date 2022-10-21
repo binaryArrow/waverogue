@@ -14,4 +14,6 @@ export class Constants{
     static skeletonMovementSpeed: number = 150
     static skeletonAttackSpeed: number = 0.5
     static skeletonHitCooldown: number = 0.5
+    static skeletonActivateHitbox: number = 0.4
+    static skeletonAttackCooldown: number = 0.3
 }

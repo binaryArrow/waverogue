@@ -40,7 +40,7 @@ export class Player extends GameObject implements Character {
 
 
     update(secondsPassed: number) {
-        this.draw(false, true)
+        this.draw(false, false)
         this.updateMovement(secondsPassed)
         this.animate()
         this.applyVelocity(secondsPassed)
