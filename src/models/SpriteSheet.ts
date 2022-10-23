@@ -3,6 +3,7 @@ export class SpriteSheet {
     // width of individual srpite in spritesheet
     singleSpriteWidth: number
     singleSpriteHeight: number
+    // number of individual Sprites in spritesheet
     singleSpriteCount: number
     context: CanvasRenderingContext2D
     image = new Image()
@@ -30,6 +31,16 @@ export class SpriteSheet {
             height);
     }
 
+    /**
+     *
+     * @param speed speed of animation calculated by framerate 60
+     * @param posX
+     * @param posY
+     * @param width
+     * @param height
+     * @param playerWidth
+     * @param playerHeight
+     */
     animate(speed: number, posX: number, posY: number, width: number, height: number, playerWidth: number, playerHeight: number) {
         if (this.frame % speed == 0) {
             this.startingPoint++;
