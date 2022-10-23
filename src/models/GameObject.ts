@@ -37,6 +37,10 @@ export class GameObject {
         this.fallSpeed = this.velocityY
     }
 
+    /**
+     * @param visible show hitbox
+     * @param visibleOutlines show outline of hitbox
+     */
     draw(visible: boolean, visibleOutlines: boolean) {
         this.context.imageSmoothingEnabled = false
         this.context.fillStyle = this.collides ? '#a66c6c' : '#94c781'

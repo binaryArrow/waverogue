@@ -143,7 +143,7 @@ export class Skeleton extends GameObject implements Character {
                 height: this.height
             }
             // show hitbox-----
-            this.context.fillRect(this.attackHitbox.posX, this.attackHitbox.posY, this.attackHitbox.width, this.attackHitbox.height)
+            // this.context.fillRect(this.attackHitbox.posX, this.attackHitbox.posY, this.attackHitbox.width, this.attackHitbox.height)
 
             if (this.timePassedAttack >= Constants.skeletonAttackSpeed) {
                 this.attackIndicator = false
