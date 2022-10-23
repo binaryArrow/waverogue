@@ -38,9 +38,17 @@ export class LogicHelper {
                     element.hit = true
                     element.hitCooldown = Constants.skeletonHitCooldown
                 }
-            // if (element instanceof Skeleton)
-            //     console.log(element.health)
         }
+    }
+
+    static skeletonAttackCollusion(skeleton: Skeleton, player: Player) {
+        if (skeleton.activateDamage && this.rectangularHitBoxIntersect(player, skeleton.attackHitbox)) {
+            player.health--
+            player.hit = true
+            skeleton.activateDamage = false
+            console.log(player.health)
+        }
+        skeleton.activateDamage = false
     }
 
 
