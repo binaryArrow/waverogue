@@ -29,6 +29,7 @@ export class Level {
         this.collusion.applyWallCollisions()
         this.collusion.applyBottomCollusion()
         // LogicHelper.detectCharacterCollusions((this.enemies as GameOobject[]).concat(this.player))
+        LogicHelper.skeletonAttackCollusion(this.enemies[0], this.player)
         LogicHelper.playerAttackCollusion(this.player, this.enemies)
         this.enemies = LogicHelper.deleteDeadEnemies(this.enemies)
         this.draw()

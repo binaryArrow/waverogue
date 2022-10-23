@@ -20,6 +20,7 @@ export class Skeleton extends GameObject implements Character {
     referenceGameObject: Player
     hitCooldown: number = 0
     attackCooldown: number = 0
+    activateDamage: boolean = false
 
     constructor(context: CanvasRenderingContext2D,
                 x: number,
@@ -66,17 +67,17 @@ export class Skeleton extends GameObject implements Character {
 
 
     updateMovement(secondsPassed: number): void {
-        if (this.referenceGameObject.posX + this.referenceGameObject.width * 2 + 10 < this.posX && !this.attackIndicator) {
+        if (this.referenceGameObject.posX + this.referenceGameObject.width < this.posX && !this.attackIndicator) {
             this.moveLeft()
             this.faceDirection = FaceDirection.LEFT
-        } else if (this.referenceGameObject.posX > this.posX + this.width * 2 && !this.attackIndicator) {
+        } else if (this.referenceGameObject.posX > this.posX + this.width && !this.attackIndicator) {
             this.moveRight()
             this.faceDirection = FaceDirection.RIGHT
         }
         else{
             this.stopMovingXAxis()
         }
-        // right
+        // apply attacks
         if(LogicHelper.rectangularHitBoxIntersect(
             this.referenceGameObject, {posX: this.posX, posY: this.posY, width: this.width * 2, height: this.height}) &&
             this.attackCooldown <= 0
@@ -148,6 +149,7 @@ export class Skeleton extends GameObject implements Character {
                 this.attackIndicator = false
                 this.timePassedAttack = 0
                 this.attackCooldown = Constants.skeletonAttackCooldown
+                this.activateDamage = true
             }
         }
         if (this.faceDirection === FaceDirection.LEFT && this.timePassedAttack > Constants.activateAttackHitbox) {
@@ -164,6 +166,8 @@ export class Skeleton extends GameObject implements Character {
                 this.attackIndicator = false
                 this.timePassedAttack = 0
                 this.attackCooldown = Constants.skeletonAttackCooldown
+                this.activateDamage = true
+
             }
         }
     }
