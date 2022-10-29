@@ -45,9 +45,16 @@ export class LogicHelper {
         if (skeleton.activateDamage && this.rectangularHitBoxIntersect(player, skeleton.attackHitbox)) {
             player.health--
             player.hit = true
-            skeleton.activateDamage = false
-            console.log(player.health)
+            if (skeleton.attackRight){
+                player.hitLeft = true
+            }
+            else if (skeleton.attackLeft) {
+                player.hitRight = true
+            }
+            player.hitCooldown = Constants.playerHitCooldown
         }
+        skeleton.attackRight = false
+        skeleton.attackLeft = false
         skeleton.activateDamage = false
     }
 

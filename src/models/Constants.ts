@@ -7,7 +7,8 @@ export class Constants{
     static playerMoveSpeed: number = 300
     static playerWidth: number = 20
     static playerJumpSpeed: number = 300
-    static playerAttackCooldown: number = 0.4
+    static playerAttackCooldown: number = 0.5
+    static playerHitCooldown: number = 1
 
     static skeletonHeight: number = 90
     static skeletonWidth: number = 30
