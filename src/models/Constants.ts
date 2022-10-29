@@ -16,4 +16,5 @@ export class Constants{
     static skeletonHitCooldown: number = 0.5
     static skeletonActivateHitbox: number = 0.4
     static skeletonAttackCooldown: number = 0.3
+    static skeletonDieAnimationtime: number = 0.4
 }

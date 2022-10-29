@@ -61,6 +61,6 @@ export class LogicHelper {
     }
 
     static deleteDeadEnemies(elements: Skeleton[]): Skeleton[] {
-        return elements.filter(element => element.health >= 0)
+        return elements.filter(elements => !elements.dead)
     }
 }
