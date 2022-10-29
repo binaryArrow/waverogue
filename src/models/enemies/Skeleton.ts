@@ -9,7 +9,7 @@ import {LogicHelper} from "../../helpers/LogicHelper";
 export class Skeleton extends GameObject implements Character {
 
     faceDirection: FaceDirection = FaceDirection.RIGHT
-    health: number = 30
+    health: number = 100
     attackDamage: number = 50
     attackIndicator: boolean = false
     width: number = Constants.skeletonWidth
@@ -38,10 +38,11 @@ export class Skeleton extends GameObject implements Character {
     }
 
     update(secondsPassed: number) {
-        this.draw(false, true)
+        this.draw(false, false)
         this.updateMovement(secondsPassed)
         this.animate(secondsPassed)
         this.applyVelocity(secondsPassed)
+        console.log(this.health)
     }
 
     applyVelocity(secondsPassed: number) {
@@ -164,6 +165,7 @@ export class Skeleton extends GameObject implements Character {
 
             if (this.timePassedAttack >= Constants.skeletonAttackSpeed) {
                 this.attackIndicator = false
+                this.attackRight = true
                 this.timePassedAttack = 0
                 this.attackCooldown = Constants.skeletonAttackCooldown
                 this.activateDamage = true
@@ -178,9 +180,10 @@ export class Skeleton extends GameObject implements Character {
                 height: this.height
             }
             // show hitbox ----
-            this.context.fillRect(this.attackHitbox.posX, this.attackHitbox.posY, this.attackHitbox.width, this.attackHitbox.height)
+            // this.context.fillRect(this.attackHitbox.posX, this.attackHitbox.posY, this.attackHitbox.width, this.attackHitbox.height)
             if (this.timePassedAttack >= Constants.skeletonAttackSpeed) {
                 this.attackIndicator = false
+                this.attackLeft = true
                 this.timePassedAttack = 0
                 this.attackCooldown = Constants.skeletonAttackCooldown
                 this.activateDamage = true

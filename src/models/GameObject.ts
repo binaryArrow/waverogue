@@ -17,6 +17,10 @@ export class GameObject {
     moveRightIndicator: boolean = false
     jumpIndicator: boolean = false
     hit: boolean = false
+    hitLeft: boolean = false
+    hitRight: boolean = false
+    attackRight: boolean = false
+    attackLeft: boolean = false
 
     constructor(
         context: CanvasRenderingContext2D,
