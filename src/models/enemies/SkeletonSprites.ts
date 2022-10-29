@@ -7,6 +7,8 @@ import skeletonWalkRight from "../../assets/skeleton/walk_right.png"
 import skeletonWalkLeft from "../../assets/skeleton/walk_left.png"
 import skeletonAttackRight from "../../assets/skeleton/skeleton_attack_right.png"
 import skeletonAttackLeft from "../../assets/skeleton/skeleton_attack_left.png"
+import skeletonDieRight from "../../assets/skeleton/skeleton_die_right.png"
+import skeletonDieLeft from "../../assets/skeleton/skeleton_die_left.png"
 
 export class SkeletonSprites{
     context: CanvasRenderingContext2D
@@ -18,6 +20,8 @@ export class SkeletonSprites{
     spriteSheetWalkRight: SpriteSheet
     spriteSheetAttackRight: SpriteSheet
     spriteSheetAttackLeft: SpriteSheet
+    spriteSheetDieRight: SpriteSheet
+    spriteSheetDieLeft: SpriteSheet
 
     constructor(context: CanvasRenderingContext2D) {
         this.context = context
@@ -29,5 +33,7 @@ export class SkeletonSprites{
         this.spriteSheetWalkLeft = new SpriteSheet(150, 150, 4, skeletonWalkLeft, this.context)
         this.spriteSheetAttackRight = new SpriteSheet(150, 58, 7, skeletonAttackRight, this.context)
         this.spriteSheetAttackLeft = new SpriteSheet(80, 58, 7, skeletonAttackLeft, this.context)
+        this.spriteSheetDieRight = new SpriteSheet(56, 54, 4, skeletonDieRight, this.context)
+        this.spriteSheetDieLeft = new SpriteSheet(56, 54, 4, skeletonDieLeft, this.context)
     }
 }

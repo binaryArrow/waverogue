@@ -9,18 +9,20 @@ import {LogicHelper} from "../../helpers/LogicHelper";
 export class Skeleton extends GameObject implements Character {
 
     faceDirection: FaceDirection = FaceDirection.RIGHT
-    health: number = 100
+    health: number = 30
     attackDamage: number = 50
     attackIndicator: boolean = false
     width: number = Constants.skeletonWidth
     height: number = Constants.skeletonHeight
     attackHitbox: RectHitbox = new RectHitbox(this.posX, this.posY, this.width * 2 + 10, this.height)
     timePassedAttack: number = 0
+    timePassedDying: number = 0
     sprites: SkeletonSprites = new SkeletonSprites(this.context)
     referenceGameObject: Player
     hitCooldown: number = 0
     attackCooldown: number = 0
     activateDamage: boolean = false
+    dead: boolean = false
 
     constructor(context: CanvasRenderingContext2D,
                 x: number,
@@ -38,7 +40,7 @@ export class Skeleton extends GameObject implements Character {
     update(secondsPassed: number) {
         this.draw(false, true)
         this.updateMovement(secondsPassed)
-        this.animate()
+        this.animate(secondsPassed)
         this.applyVelocity(secondsPassed)
     }
 
@@ -67,10 +69,10 @@ export class Skeleton extends GameObject implements Character {
 
 
     updateMovement(secondsPassed: number): void {
-        if (this.referenceGameObject.posX + this.referenceGameObject.width < this.posX && !this.attackIndicator) {
+        if (this.referenceGameObject.posX + this.referenceGameObject.width < this.posX - this.width/2 && !this.attackIndicator) {
             this.moveLeft()
             this.faceDirection = FaceDirection.LEFT
-        } else if (this.referenceGameObject.posX > this.posX + this.width && !this.attackIndicator) {
+        } else if (this.referenceGameObject.posX > this.posX + this.width + this.width/2 && !this.attackIndicator) {
             this.moveRight()
             this.faceDirection = FaceDirection.RIGHT
         }
@@ -92,38 +94,53 @@ export class Skeleton extends GameObject implements Character {
         }
     }
 
-    animate(): void {
-        if (!this.hit && this.faceDirection == FaceDirection.RIGHT && this.velocityX == 0 && !this.attackIndicator)
+    // TODO: pls REF THIS
+    animate(secondsPassed: number): void {
+        if (!this.hit && this.faceDirection == FaceDirection.RIGHT && this.velocityX == 0 && !this.attackIndicator && this.health > 0)
             this.sprites.spriteSheetIdleRight.animate(12, this.posX - 65, this.posY + 34, 180, 100, this.width, this.height)
 
-        else if (!this.hit && this.faceDirection == FaceDirection.LEFT && this.velocityX == 0 && !this.attackIndicator)
+        else if (!this.hit && this.faceDirection == FaceDirection.LEFT && this.velocityX == 0 && !this.attackIndicator && this.health > 0)
             this.sprites.spriteSheetIdleLeft.animate(12, this.posX - 56, this.posY + 34, 180, 100, this.width, this.height)
 
-        else if (this.hit && this.faceDirection == FaceDirection.RIGHT) {
+        else if (this.hit && this.faceDirection == FaceDirection.RIGHT && this.health > 0) {
             this.stopMovingXAxis()
             this.sprites.spriteSheetTakeHitRight.animate(7, this.posX - 65, this.posY - 48, 180, 270, this.width, this.height)
             if (this.sprites.spriteSheetTakeHitRight.animationFinished()) this.hit = false
         }
-        else if (this.hit && this.faceDirection == FaceDirection.LEFT) {
+        else if (this.hit && this.faceDirection == FaceDirection.LEFT && this.health > 0) {
             this.stopMovingXAxis()
             this.sprites.spriteSheetTakeHitLeft.animate(7, this.posX - 65, this.posY - 48, 180, 270, this.width, this.height)
             if (this.sprites.spriteSheetTakeHitLeft.animationFinished()) this.hit = false
         }
-        else if (this.velocityX < 0 && this.faceDirection == FaceDirection.LEFT && !this.attackIndicator)
+        else if (this.velocityX < 0 && this.faceDirection == FaceDirection.LEFT && !this.attackIndicator && this.health > 0)
             this.sprites.spriteSheetWalkLeft.animate(12, this.posX - 72, this.posY - 48, 180, 270, this.width, this.height)
 
-        else if (this.velocityX > 0 && this.faceDirection == FaceDirection.RIGHT && !this.attackIndicator)
+        else if (this.velocityX > 0 && this.faceDirection == FaceDirection.RIGHT && !this.attackIndicator && this.health > 0)
             this.sprites.spriteSheetWalkRight.animate(12, this.posX - 65, this.posY - 48, 180, 270, this.width, this.height)
 
-        if (this.attackIndicator && this.faceDirection == FaceDirection.RIGHT && !this.hit) {
+        if (this.attackIndicator && this.faceDirection == FaceDirection.RIGHT && !this.hit && this.health > 0) {
             this.stopMovingXAxis()
             this.sprites.spriteSheetAttackRight.animate(4, this.posX - 60, this.posY + 35, 180, 100, this.width, this.height)
         } else this.sprites.spriteSheetAttackRight.resetActualsprite()
 
-        if (this.attackIndicator && this.faceDirection == FaceDirection.LEFT && !this.hit) {
+        if (this.attackIndicator && this.faceDirection == FaceDirection.LEFT && !this.hit && this.health > 0) {
             this.stopMovingXAxis()
             this.sprites.spriteSheetAttackLeft.animate(4, this.posX - 40, this.posY + 35, 100, 105, this.width, this.height)
         } else this.sprites.spriteSheetAttackLeft.resetActualsprite()
+        if(this.health <= 0 && this.faceDirection == FaceDirection.RIGHT) {
+            this.sprites.spriteSheetDieRight.animate(8, this.posX, this.posY + 34, 60, 100, this.width, this.height)
+            this.timePassedDying += secondsPassed
+            if (this.timePassedDying >= Constants.skeletonDieAnimationtime) {
+                this.dead = true
+            }
+        }
+        if(this.health <= 0 && this.faceDirection == FaceDirection.LEFT) {
+            this.sprites.spriteSheetDieLeft.animate(8, this.posX, this.posY + 34, 60, 100, this.width, this.height)
+            this.timePassedDying += secondsPassed
+            if (this.timePassedDying >= Constants.skeletonDieAnimationtime) {
+                this.dead = true
+            }
+        }
     }
 
     setRollPosition(secondsPast: number) {
