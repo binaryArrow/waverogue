@@ -17,12 +17,13 @@ export class Player extends GameObject implements Character {
     timePassedRoll: number = 0
     timePassedAttack: number = 0
     rollCooldown: number = 0
-    health: number = 100
+    health: number = 1
     attackDamage: number = 10
     activateDamage: boolean = false
     rollPosition: number
     attackCooldown: number = 0
     hitCooldown: number = 0
+    timePassedDying: number = 0
 
     constructor(
         context: CanvasRenderingContext2D,
@@ -42,9 +43,11 @@ export class Player extends GameObject implements Character {
 
     update(secondsPassed: number) {
         this.draw(false, true)
-        this.updateMovement(secondsPassed)
+        if (!this.dead)
+            this.updateMovement(secondsPassed)
         this.animate(secondsPassed)
         this.applyVelocity(secondsPassed)
+        console.log(this.dead)
     }
 
     updateMovement(secondsPassed: number) {
@@ -134,18 +137,18 @@ export class Player extends GameObject implements Character {
             }
         })
         window.addEventListener('keyup', (e) => {
-                switch (e.key) {
-                    case 'a':
-                        this.moveLeftIndicator = false
-                        break;
-                    case 'd':
-                        this.moveRightIndicator = false
-                        break;
-                    // case 's':
-                    //     this.crouchIndicator = false
-                    //     this.resetCrouch()
-                    //     break;
-                }
+            switch (e.key) {
+                case 'a':
+                    this.moveLeftIndicator = false
+                    break;
+                case 'd':
+                    this.moveRightIndicator = false
+                    break;
+                // case 's':
+                //     this.crouchIndicator = false
+                //     this.resetCrouch()
+                //     break;
+            }
         })
     }
 
@@ -251,50 +254,50 @@ export class Player extends GameObject implements Character {
     }
 
     animate(secondsPassed: number): void {
-        if (!this.hit && this.velocityX > 0 && !this.inAir && !this.dashIndicator && !this.crouchIndicator && !this.attackIndicator)
+        if (!this.dead && !this.hit && this.velocityX > 0 && !this.inAir && !this.dashIndicator && !this.crouchIndicator && !this.attackIndicator)
             this.sprites.spriteSheetPlayerRunRight.animate(5, this.posX, this.posY + 23, 50, 80, this.width + 20, this.height)
 
-        else if (!this.hit && this.velocityX < 0 && !this.inAir && !this.dashIndicator && !this.crouchIndicator && !this.attackIndicator)
+        else if (!this.dead && !this.hit && this.velocityX < 0 && !this.inAir && !this.dashIndicator && !this.crouchIndicator && !this.attackIndicator)
             this.sprites.spriteSheetPlayerRunLeft.animate(5, this.posX, this.posY + 23, 50, 80, this.width - 10, this.height)
 
-        else if (!this.hit && this.faceDirection == FaceDirection.RIGHT && !this.inAir && !this.crouchIndicator && !this.dashIndicator && !this.attackIndicator)
+        else if (!this.dead && !this.hit && this.faceDirection == FaceDirection.RIGHT && !this.inAir && !this.crouchIndicator && !this.dashIndicator && !this.attackIndicator)
             this.sprites.spriteSheetPlayerIdleRight.animate(10, this.posX, this.posY + 21, 40, 80, this.width, this.height)
 
-        else if (!this.hit && this.faceDirection == FaceDirection.LEFT && !this.inAir && !this.crouchIndicator && !this.dashIndicator && !this.attackIndicator)
+        else if (!this.dead && !this.hit && this.faceDirection == FaceDirection.LEFT && !this.inAir && !this.crouchIndicator && !this.dashIndicator && !this.attackIndicator)
             this.sprites.spriteSheetPlayerIdleLeft.animate(10, this.posX, this.posY + 21, 40, 80, this.width, this.height)
 
-        else if (!this.hit && this.inAir && this.faceDirection == FaceDirection.RIGHT && this.velocityY <= 0 && !this.dashIndicator)
+        else if (!this.dead && !this.hit && this.inAir && this.faceDirection == FaceDirection.RIGHT && this.velocityY <= 0 && !this.dashIndicator)
             this.sprites.spriteSheetPlayerJumpRight.animate(10, this.posX, this.posY + 23, 40, 80, this.width, this.height)
 
-        else if (!this.hit && this.inAir && this.faceDirection == FaceDirection.LEFT && this.velocityY <= 0 && !this.dashIndicator)
+        else if (!this.dead && !this.hit && this.inAir && this.faceDirection == FaceDirection.LEFT && this.velocityY <= 0 && !this.dashIndicator)
             this.sprites.spriteSheetPlayerJumpLeft.animate(10, this.posX, this.posY + 23, 40, 80, this.width, this.height)
 
-        else if (!this.hit && this.inAir && this.faceDirection == FaceDirection.RIGHT && this.velocityY >= 0 && !this.dashIndicator)
+        else if (!this.dead && !this.hit && this.inAir && this.faceDirection == FaceDirection.RIGHT && this.velocityY >= 0 && !this.dashIndicator)
             this.sprites.spriteSheetPlayerFallRight.animate(10, this.posX, this.posY + 23, 40, 80, this.width, this.height)
 
-        else if (!this.hit && this.inAir && this.faceDirection == FaceDirection.LEFT && this.velocityY >= 0 && !this.dashIndicator)
+        else if (!this.dead && !this.hit && this.inAir && this.faceDirection == FaceDirection.LEFT && this.velocityY >= 0 && !this.dashIndicator)
             this.sprites.spriteSheetPlayerFallLeft.animate(10, this.posX, this.posY + 23, 40, 80, this.width, this.height)
 
-        else if (!this.hit && this.crouchIndicator && this.faceDirection == FaceDirection.RIGHT && !this.inAir && !this.dashIndicator && !this.attackIndicator)
+        else if (!this.dead && !this.hit && this.crouchIndicator && this.faceDirection == FaceDirection.RIGHT && !this.inAir && !this.dashIndicator && !this.attackIndicator)
             this.sprites.spriteSheetPlayerCrouchRight.animate(13, this.posX, this.posY - 28, 40, 80, this.width, this.height)
 
-        else if (!this.hit && this.crouchIndicator && this.faceDirection == FaceDirection.LEFT && !this.inAir && !this.dashIndicator && !this.attackIndicator)
+        else if (!this.dead && !this.hit && this.crouchIndicator && this.faceDirection == FaceDirection.LEFT && !this.inAir && !this.dashIndicator && !this.attackIndicator)
             this.sprites.spriteSheetPlayerCrouchLeft.animate(13, this.posX, this.posY - 28, 40, 80, this.width, this.height)
 
-        if (!this.hit && this.attackIndicator && this.faceDirection == FaceDirection.RIGHT) {
+        if (!this.dead && !this.hit && this.attackIndicator && this.faceDirection == FaceDirection.RIGHT) {
             this.sprites.spriteSheetPlayerAttack1Right.animate(4, this.posX - 15, this.posY + 13, 100, 90, this.width, this.height)
         } else this.sprites.spriteSheetPlayerAttack1Right.resetActualsprite()
 
-        if (!this.hit && this.attackIndicator && this.faceDirection == FaceDirection.LEFT) {
+        if (!this.dead && !this.hit && this.attackIndicator && this.faceDirection == FaceDirection.LEFT) {
             this.sprites.spriteSheetPlayerAttack1Left.animate(4, this.posX - 45, this.posY + 13, 100, 90, this.width, this.height)
         } else this.sprites.spriteSheetPlayerAttack1Left.resetActualsprite()
 
-        if (this.hit && this.hitRight && this.health > 0 && this.hitCooldown > 0) {
+        if (!this.dead && this.hit && this.hitRight && this.health > 0 && this.hitCooldown > 0) {
             this.sprites.spriteSheetPlayerHurtRight.animate(7, this.posX - 25, this.posY + 8, 100, 100, this.width, this.height)
             this.velocityX = -200
             this.hitCooldown -= secondsPassed
         }
-        if (this.hit && this.hitLeft && this.health > 0 && this.hitCooldown > 0) {
+        if (!this.dead && this.hit && this.hitLeft && this.health > 0 && this.hitCooldown > 0) {
             this.sprites.spriteSheetPlayerHurtLeft.animate(7, this.posX - 25, this.posY + 8, 100, 100, this.width, this.height)
             this.velocityX = 200
             this.hitCooldown -= secondsPassed
@@ -304,6 +307,24 @@ export class Player extends GameObject implements Character {
             this.hitLeft = false
             this.hitRight = false
             this.stopMovingXAxis()
+        }
+        if (this.health <= 0 && this.faceDirection == FaceDirection.RIGHT) {
+            if (!this.dead)
+                this.sprites.spriteSheetPlayerDieRight.animate(8, this.posX - 50, this.posY + 5, 100, 100, this.width, this.height)
+            else this.sprites.spritePlayerDeadRight.drawSprite(this.posX - 60, this.posY - 30, 100, 100)
+            this.timePassedDying += secondsPassed
+            if (this.timePassedDying >= Constants.playerDieAnimationTime) {
+                this.dead = true
+            }
+        }
+        if (this.health <= 0 && this.faceDirection == FaceDirection.LEFT) {
+            if (!this.dead)
+                this.sprites.spriteSheetPlayerDieLeft.animate(8, this.posX + 20, this.posY + 5, 100, 100, this.width, this.height)
+            else this.sprites.spritePlayerDeadLeft.drawSprite(this.posX - 20,  this.posY - 30, 100, 100)
+            this.timePassedDying += secondsPassed
+            if (this.timePassedDying >= Constants.playerDieAnimationTime) {
+                this.dead = true
+            }
         }
     }
 

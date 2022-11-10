@@ -14,6 +14,10 @@ import playerAttack1Right from "../../assets/player/player_attack_1_right.png"
 import playerAttack1Left from "../../assets/player/player_attack_1_left.png"
 import playerHurtRight from "../../assets/player/player_hurt_right.png"
 import playerHurtLeft from "../../assets/player/player_hurt_left.png"
+import playerDieRight from "../../assets/player/player_die_right.png"
+import playerDeadRight from "../../assets/player/player_dead_right.png"
+import playerDieLeft from "../../assets/player/player_die_left.png"
+import playerDeadLeft from "../../assets/player/player_dead_left.png"
 import {SpriteSheet} from "../SpriteSheet";
 import {Sprite} from "../Sprite";
 
@@ -34,6 +38,10 @@ export class PlayerSprites{
     spriteSheetPlayerAttack1Left: SpriteSheet
     spriteSheetPlayerHurtRight: SpriteSheet
     spriteSheetPlayerHurtLeft: SpriteSheet
+    spriteSheetPlayerDieRight: SpriteSheet
+    spriteSheetPlayerDieLeft: SpriteSheet
+    spritePlayerDeadRight: Sprite
+    spritePlayerDeadLeft: Sprite
     spritePlayerDashRight: Sprite
     spritePlayerDashLeft: Sprite
 
@@ -53,6 +61,10 @@ export class PlayerSprites{
         this.spriteSheetPlayerAttack1Left = new SpriteSheet(56, 44, 8, playerAttack1Left, context)
         this.spriteSheetPlayerHurtRight = new SpriteSheet(64, 44, 4, playerHurtRight, context)
         this.spriteSheetPlayerHurtLeft = new SpriteSheet(64, 44, 4, playerHurtLeft, context)
+        this.spriteSheetPlayerDieRight = new SpriteSheet(64, 44, 11, playerDieRight, context)
+        this.spriteSheetPlayerDieLeft = new SpriteSheet(64, 44, 11, playerDieLeft, context)
+        this.spritePlayerDeadRight = new Sprite(playerDeadRight, context)
+        this.spritePlayerDeadLeft = new Sprite(playerDeadLeft, context)
         this.spritePlayerDashRight = new Sprite(playerDashRight, context)
         this.spritePlayerDashLeft = new Sprite(playerDashLeft, context)
 
