@@ -53,9 +53,7 @@ export class LogicHelper {
             }
             player.hitCooldown = Constants.playerHitCooldown
         }
-        skeleton.attackRight = false
-        skeleton.attackLeft = false
-        skeleton.activateDamage = false
+        skeleton.resetAttack()
     }
 
 
@@ -69,5 +67,9 @@ export class LogicHelper {
 
     static deleteDeadEnemies(elements: Skeleton[]): Skeleton[] {
         return elements.filter(elements => !elements.dead)
+    }
+
+    static gameOver(player: Player) {
+
     }
 }

@@ -31,7 +31,7 @@ function init() {
         Constants.playerWidth,
         Constants.playerHeight
     )
-    enemies = InitHelper.spawnEnemies(0,context, player)
+    enemies = InitHelper.spawnEnemies(0, context, player)
     levelHelper = new LevelHelper(context, player, enemies)
     window.requestAnimationFrame(update)
 }

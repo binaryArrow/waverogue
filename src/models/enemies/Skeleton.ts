@@ -22,7 +22,6 @@ export class Skeleton extends GameObject implements Character {
     hitCooldown: number = 0
     attackCooldown: number = 0
     activateDamage: boolean = false
-    dead: boolean = false
 
     constructor(context: CanvasRenderingContext2D,
                 x: number,
@@ -39,10 +38,13 @@ export class Skeleton extends GameObject implements Character {
 
     update(secondsPassed: number) {
         this.draw(false, false)
-        this.updateMovement(secondsPassed)
+        if (this.referenceGameObject.dead) {
+            this.resetAttack()
+            this.attackIndicator = false
+        } else
+            this.updateMovement(secondsPassed)
         this.animate(secondsPassed)
         this.applyVelocity(secondsPassed)
-        console.log(this.health)
     }
 
     applyVelocity(secondsPassed: number) {
@@ -70,23 +72,27 @@ export class Skeleton extends GameObject implements Character {
 
 
     updateMovement(secondsPassed: number): void {
-        if (this.referenceGameObject.posX + this.referenceGameObject.width < this.posX - this.width/2 && !this.attackIndicator) {
+        if (this.referenceGameObject.posX + this.referenceGameObject.width < this.posX - this.width / 2 && !this.attackIndicator) {
             this.moveLeft()
             this.faceDirection = FaceDirection.LEFT
-        } else if (this.referenceGameObject.posX > this.posX + this.width + this.width/2 && !this.attackIndicator) {
+        } else if (this.referenceGameObject.posX > this.posX + this.width + this.width / 2 && !this.attackIndicator) {
             this.moveRight()
             this.faceDirection = FaceDirection.RIGHT
-        }
-        else{
+        } else {
             this.stopMovingXAxis()
         }
         // apply attacks
-        if(LogicHelper.rectangularHitBoxIntersect(
-            this.referenceGameObject, {posX: this.posX, posY: this.posY, width: this.width * 2, height: this.height}) &&
+        if (LogicHelper.rectangularHitBoxIntersect(
+                this.referenceGameObject, {posX: this.posX, posY: this.posY, width: this.width * 2, height: this.height}) &&
             this.attackCooldown <= 0
-        ||
+            ||
             LogicHelper.rectangularHitBoxIntersect(
-                this.referenceGameObject, {posX: this.posX - this.width, posY: this.posY, width: this.width *2, height: this.height}) &&
+                this.referenceGameObject, {
+                    posX: this.posX - this.width,
+                    posY: this.posY,
+                    width: this.width * 2,
+                    height: this.height
+                }) &&
             this.attackCooldown <= 0
         )
             this.attackIndicator = true
@@ -107,13 +113,11 @@ export class Skeleton extends GameObject implements Character {
             this.stopMovingXAxis()
             this.sprites.spriteSheetTakeHitRight.animate(7, this.posX - 65, this.posY - 48, 180, 270, this.width, this.height)
             if (this.sprites.spriteSheetTakeHitRight.animationFinished()) this.hit = false
-        }
-        else if (this.hit && this.faceDirection == FaceDirection.LEFT && this.health > 0) {
+        } else if (this.hit && this.faceDirection == FaceDirection.LEFT && this.health > 0) {
             this.stopMovingXAxis()
             this.sprites.spriteSheetTakeHitLeft.animate(7, this.posX - 65, this.posY - 48, 180, 270, this.width, this.height)
             if (this.sprites.spriteSheetTakeHitLeft.animationFinished()) this.hit = false
-        }
-        else if (this.velocityX < 0 && this.faceDirection == FaceDirection.LEFT && !this.attackIndicator && this.health > 0)
+        } else if (this.velocityX < 0 && this.faceDirection == FaceDirection.LEFT && !this.attackIndicator && this.health > 0)
             this.sprites.spriteSheetWalkLeft.animate(12, this.posX - 72, this.posY - 48, 180, 270, this.width, this.height)
 
         else if (this.velocityX > 0 && this.faceDirection == FaceDirection.RIGHT && !this.attackIndicator && this.health > 0)
@@ -128,14 +132,14 @@ export class Skeleton extends GameObject implements Character {
             this.stopMovingXAxis()
             this.sprites.spriteSheetAttackLeft.animate(4, this.posX - 40, this.posY + 35, 100, 105, this.width, this.height)
         } else this.sprites.spriteSheetAttackLeft.resetActualsprite()
-        if(this.health <= 0 && this.faceDirection == FaceDirection.RIGHT) {
+        if (this.health <= 0 && this.faceDirection == FaceDirection.RIGHT) {
             this.sprites.spriteSheetDieRight.animate(8, this.posX, this.posY + 34, 60, 100, this.width, this.height)
             this.timePassedDying += secondsPassed
             if (this.timePassedDying >= Constants.skeletonDieAnimationtime) {
                 this.dead = true
             }
         }
-        if(this.health <= 0 && this.faceDirection == FaceDirection.LEFT) {
+        if (this.health <= 0 && this.faceDirection == FaceDirection.LEFT) {
             this.sprites.spriteSheetDieLeft.animate(8, this.posX, this.posY + 34, 60, 100, this.width, this.height)
             this.timePassedDying += secondsPassed
             if (this.timePassedDying >= Constants.skeletonDieAnimationtime) {
@@ -148,6 +152,12 @@ export class Skeleton extends GameObject implements Character {
     }
 
     jump() {
+    }
+
+    resetAttack() {
+        this.attackRight = false
+        this.attackLeft = false
+        this.activateDamage = false
     }
 
     applyAttack(secondsPassed: number) {
@@ -187,7 +197,6 @@ export class Skeleton extends GameObject implements Character {
                 this.timePassedAttack = 0
                 this.attackCooldown = Constants.skeletonAttackCooldown
                 this.activateDamage = true
-
             }
         }
     }

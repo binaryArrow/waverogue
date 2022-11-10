@@ -21,6 +21,7 @@ export class GameObject {
     hitRight: boolean = false
     attackRight: boolean = false
     attackLeft: boolean = false
+    dead: boolean = false
 
     constructor(
         context: CanvasRenderingContext2D,
