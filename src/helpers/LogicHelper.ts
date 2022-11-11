@@ -43,7 +43,7 @@ export class LogicHelper {
 
     static skeletonAttackCollusion(skeleton: Skeleton, player: Player) {
         if (skeleton.activateDamage && this.rectangularHitBoxIntersect(player, skeleton.attackHitbox)) {
-            player.health--
+            player.health -= skeleton.attackDamage
             player.hit = true
             if (skeleton.attackRight){
                 player.hitLeft = true

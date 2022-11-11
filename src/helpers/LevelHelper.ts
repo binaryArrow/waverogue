@@ -4,9 +4,11 @@ import {Level1} from "../models/levels/Level1";
 import {Level} from "../models/levelmodels/Level";
 import {Player} from "../models/player/Player";
 import {Skeleton} from "../models/enemies/Skeleton";
+import {PlayerUI} from "../UI/PlayerUI";
 
 export class LevelHelper {
     levels: Level[] = []
+    playerUI: PlayerUI
 
     constructor(context: CanvasRenderingContext2D, player: Player, enemies: Skeleton[]) {
         this.levels.push(
@@ -21,10 +23,12 @@ export class LevelHelper {
                 enemies
             )
         )
+        this.playerUI = new PlayerUI(player, context)
     }
 
     update(secondsPassed: number) {
         this.levels[0].update(secondsPassed)
+        this.playerUI.drawUI()
     }
 
 }

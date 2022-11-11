@@ -17,7 +17,7 @@ export class Player extends GameObject implements Character {
     timePassedRoll: number = 0
     timePassedAttack: number = 0
     rollCooldown: number = 0
-    health: number = 1
+    health: number = 100
     attackDamage: number = 10
     activateDamage: boolean = false
     rollPosition: number
