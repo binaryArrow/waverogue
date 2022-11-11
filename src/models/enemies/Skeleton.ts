@@ -10,7 +10,7 @@ export class Skeleton extends GameObject implements Character {
 
     faceDirection: FaceDirection = FaceDirection.RIGHT
     health: number = 100
-    attackDamage: number = 50
+    attackDamage: number = 25
     attackIndicator: boolean = false
     width: number = Constants.skeletonWidth
     height: number = Constants.skeletonHeight
