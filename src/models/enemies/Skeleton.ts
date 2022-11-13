@@ -22,6 +22,7 @@ export class Skeleton extends GameObject implements Character {
     hitCooldown: number = 0
     attackCooldown: number = 0
     activateDamage: boolean = false
+    private outerBarWidth: number = this.health;
 
     constructor(context: CanvasRenderingContext2D,
                 x: number,
@@ -38,6 +39,7 @@ export class Skeleton extends GameObject implements Character {
 
     update(secondsPassed: number) {
         this.draw(false, false)
+        this.drawHealthBar()
         if (this.referenceGameObject.dead) {
             this.resetAttack()
             this.attackIndicator = false
@@ -199,5 +201,12 @@ export class Skeleton extends GameObject implements Character {
                 this.activateDamage = true
             }
         }
+    }
+
+    drawHealthBar() {
+        this.context.fillStyle = '#757474'
+        this.context.fillRect(this.posX - this.width/4, this.posY - this.height/3 , this.outerBarWidth/2, 8)
+        this.context.fillStyle = '#f36f6f'
+        this.context.fillRect(this.posX - this.width/4, this.posY - this.height/3, this.health/2, 8)
     }
 }
