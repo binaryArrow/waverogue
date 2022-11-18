@@ -5,6 +5,7 @@ import {Level} from "../models/levelmodels/Level";
 import {Player} from "../models/player/Player";
 import {Skeleton} from "../models/enemies/Skeleton";
 import {PlayerUI} from "../UI/PlayerUI";
+import level1 from "./waverogue.png"
 
 export class LevelHelper {
     levels: Level[] = []
@@ -20,7 +21,8 @@ export class LevelHelper {
                     new Top(0, 600, 300, 10, context)
                 ),
                 player,
-                enemies
+                enemies,
+                level1
             )
         )
         this.playerUI = new PlayerUI(player, context)
