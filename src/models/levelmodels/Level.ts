@@ -11,8 +11,9 @@ export class Level {
     collusion: Collusion
     player: Player
     enemies: Skeleton[]
+    levelImage
 
-    constructor(context: CanvasRenderingContext2D, mapElements: MapElement[], player: Player, enemies: Skeleton[]) {
+    constructor(context: CanvasRenderingContext2D, mapElements: MapElement[], player: Player, enemies: Skeleton[], imgSrc: any) {
         this.context = context
         this.mapElements = mapElements
         this.player = player
@@ -20,9 +21,12 @@ export class Level {
         this.collusion = new Collusion((this.enemies as GameObject[]).concat(this.player), this.mapElements)
         this.context.strokeStyle = '#000000'
         this.context.lineWidth = 5
+        this.levelImage = new Image()
+        this.levelImage.src = imgSrc
     }
 
     update(secondsPassed: number) {
+        this.draw()
         this.enemies.forEach(enemy => enemy.update(secondsPassed))
         this.player.update(secondsPassed)
         this.collusion.applyTopCollusion()
@@ -33,10 +37,10 @@ export class Level {
             LogicHelper.skeletonAttackCollusion(this.enemies[0], this.player)
         LogicHelper.playerAttackCollusion(this.player, this.enemies)
         this.enemies = LogicHelper.deleteDeadEnemies(this.enemies)
-        this.draw()
     }
 
     draw() {
+        this.context.drawImage(this.levelImage, 0, -400)
         this.mapElements.forEach(element => element.draw())
     }
 }
