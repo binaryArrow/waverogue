@@ -24,8 +24,8 @@ function init() {
     canvas.height = HEIGHT
     player = new Player(
         context,
-        0,
-        420,
+        20,
+        450,
         Constants.playerMoveSpeed,
         Constants.playerJumpSpeed,
         Constants.playerWidth,

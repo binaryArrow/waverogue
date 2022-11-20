@@ -42,7 +42,7 @@ export class Player extends GameObject implements Character {
 
 
     update(secondsPassed: number) {
-        this.draw(false, true)
+        this.draw(false, false)
         if (!this.dead)
             this.updateMovement(secondsPassed)
         this.animate(secondsPassed)
@@ -253,6 +253,7 @@ export class Player extends GameObject implements Character {
         }
     }
 
+    // TODO: REF DIIIIS
     animate(secondsPassed: number): void {
         if (!this.dead && !this.hit && this.velocityX > 0 && !this.inAir && !this.dashIndicator && !this.crouchIndicator && !this.attackIndicator)
             this.sprites.spriteSheetPlayerRunRight.animate(5, this.posX, this.posY + 23, 50, 80, this.width + 20, this.height)

@@ -9,8 +9,8 @@ export class InitHelper {
             enemies.push(
                 new Skeleton(
                     context,
-                    Math.floor(Math.random() * 1500),
-                    300,
+                    Math.floor(Math.random() * 500 + 700 ),
+                    550,
                     Constants.skeletonMovementSpeed,
                     300,
                     Constants.skeletonWidth,

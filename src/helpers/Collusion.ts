@@ -4,13 +4,16 @@ import {MapElement} from "../models/levelmodels/MapElement";
 import {Wall} from "../models/levelmodels/Wall";
 import {WallCollusionpoints} from "../models/levelmodels/WallCollusionpoints";
 import {Bottom} from "../models/levelmodels/Bottom";
+
 export class Collusion {
     gameObjects: GameObject[]
     mapElements: MapElement[]
+    mapBoundaries: number[]
 
-    constructor(gameObjects: GameObject[], mapElements: MapElement[]) {
+    constructor(gameObjects: GameObject[], mapElements: MapElement[], mapBoundaries: number[]) {
         this.gameObjects = gameObjects
         this.mapElements = mapElements
+        this.mapBoundaries = mapBoundaries
     }
 
     applyTopCollusion(): void {
@@ -41,20 +44,20 @@ export class Collusion {
                     switch (this.checkLeftOrRightCollusion(gameObject, mapElement)) {
                         case WallCollusionpoints.LEFT: {
                             // mapElement.collides = true
-                            if(this.mapElements.filter(it => it.playerCollides).length > 0)
+                            if (this.mapElements.filter(it => it.playerCollides).length > 0)
                                 gameObject.collides = true
                             gameObject.posX = mapElement.x - gameObject.width
                             break;
                         }
                         case WallCollusionpoints.RIGHT: {
                             // mapElement.collides = true
-                            if(this.mapElements.filter(it => it.playerCollides).length > 0)
+                            if (this.mapElements.filter(it => it.playerCollides).length > 0)
                                 gameObject.collides = true
                             gameObject.posX = mapElement.x + mapElement.width
                             break;
                         }
                         default: {
-                            if(this.mapElements.filter(it => it.playerCollides).length == 0)
+                            if (this.mapElements.filter(it => it.playerCollides).length == 0)
                                 gameObject.collides = false
                             mapElement.collides = false
                         }
@@ -126,5 +129,14 @@ export class Collusion {
                 mapElement.y > object.height + object.posY)
         }
 
+    }
+
+    applyMapBoundaries() {
+        this.gameObjects.forEach(gameObject => {
+            if (gameObject.posX < this.mapBoundaries[0])
+                gameObject.posX = this.mapBoundaries[0]
+            else if (gameObject.posX > this.mapBoundaries[1])
+                gameObject.posX = this.mapBoundaries[1]
+        })
     }
 }
