@@ -1,0 +1,11 @@
+#gridCanvas{
+    border: 2px solid black;
+    background-color: antiquewhite;
+}
+.canvas-container{
+    text-align: center;
+}
+
+body{
+    background-color: #0e1327;
+}
