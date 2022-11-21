@@ -7,7 +7,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "parcel",
     "build": "parcel build src/index.html --public-url ./",
-    "predeploy": "parcel build ./*.html --public-url ./",
     "deploy": "gh-pages -d dist"
   },
   "author": "Can Cihan Nazlier",

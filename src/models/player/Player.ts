@@ -47,7 +47,7 @@ export class Player extends GameObject implements Character {
             this.updateMovement(secondsPassed)
         this.animate(secondsPassed)
         this.applyVelocity(secondsPassed)
-        console.log(this.dead)
+        //console.log(this.dead)
     }
 
     updateMovement(secondsPassed: number) {

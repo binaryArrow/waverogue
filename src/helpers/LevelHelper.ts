@@ -17,7 +17,7 @@ export class LevelHelper {
                 // new StaticMapObject(1300, 650, 500, 200, context).getStaticMapObject().concat(
                 [
                     new Top(0, 700, 1800, 10, context),
-                    new Top(0, 600, 300, 10, context)
+                    new Top(0, 600, 280, 10, context)
                 ],
                 player,
                 enemies,
