@@ -14,8 +14,20 @@ let context: CanvasRenderingContext2D
 let player: Player
 let enemies: Skeleton[]
 let levelHelper: LevelHelper
-window.onload = init
 
+window.onload = () => {
+        document.getElementById("loadingScreen")!!.style.display = 'none'
+        startScreen()
+}
+
+function startScreen() {
+    document.getElementById("startScreen")!!.style.display = 'block'
+    document.getElementById("startButton")!!.addEventListener("click", ()=>{
+        document.getElementById("canvasContainer")!!.style.display = 'block'
+        document.getElementById("startScreen")!!.style.display = 'none'
+        init()
+    })
+}
 
 function init() {
     canvas = document.getElementById('gridCanvas') as HTMLCanvasElement
